@@ -252,7 +252,7 @@ window.tampilkanDetailBaru = function(index, event) {
             <div style="margin-bottom: 4px; font-size: 13px;"><strong>${t.txtKategori}:</strong> ${katName}</div>
             <div style="margin-bottom: 4px; font-size: 13px;"><strong>${t.txtOperasional}:</strong> ${operasional}</div>
             
-            <!-- PERBAIKAN DI SINI: Area Deskripsi Dibuat Scrollable (~5 Baris) -->
+            <!-- Area Deskripsi Scrollable -->
             <div style="max-height: 85px; overflow-y: auto; overflow-wrap: break-word; word-wrap: break-word; padding-right: 5px; margin-bottom: 10px; font-size: 13px; line-height: 1.4; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 4px;">
                 <strong>${t.txtInfo}:</strong> ${deskripsi}
             </div>
@@ -484,85 +484,6 @@ map.on('pm:create', function(e) {
 });
 
 // ==========================================
-// 8. FITUR LAPOR WARGA & TOGGLE BAHASA
-// ==========================================
-let isReportingMode = false;
-const laporControl = L.control({ position: 'topright' });
-
-laporControl.onAdd = function(map) {
-    const btn = L.DomUtil.create('button', 'lapor-warga-control');
-    btn.innerHTML = terjemahan[bahasaSaatIni].laporCepat;
-    
-    L.DomEvent.on(btn, 'click', function(e) {
-        L.DomEvent.stopPropagation(e); 
-        isReportingMode = !isReportingMode; 
-        const t = terjemahan[bahasaSaatIni];
-        
-        if (isReportingMode) {
-            btn.innerHTML = t.laporBatal;
-            btn.classList.add('active');
-            document.getElementById('map').classList.add('reporting-mode');
-            alert(t.alertLaporAktif);
-        } else {
-            btn.innerHTML = t.laporCepat;
-            btn.classList.remove('active');
-            document.getElementById('map').classList.remove('reporting-mode');
-        }
-    });
-    return btn;
-};
-laporControl.addTo(map);
-
-map.on('click', function(e) {
-    if (isReportingMode) {
-        const lat = e.latlng.lat.toFixed(6);
-        const lng = e.latlng.lng.toFixed(6);
-        const t = terjemahan[bahasaSaatIni];
-        
-        let pesanKonfirmasi = t.alertLaporKonfirm.replace('{lat}', lat).replace('{lng}', lng);
-        
-        if(confirm(pesanKonfirmasi)) {
-            const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLScA-jsmUPdBB_sa-eftZU5gCZWxMR3q5FDGNQOsRLA1MT_kuw/viewform?usp=pp_url&entry.1856517992=${lat}&entry.1981551024=${lng}`;
-            window.open(formUrl, '_blank');
-            
-            isReportingMode = false;
-            const btn = document.querySelector('.lapor-warga-control');
-            btn.innerHTML = t.laporCepat;
-            btn.classList.remove('active');
-            document.getElementById('map').classList.remove('reporting-mode');
-        }
-    }
-});
-
-// LOGIKA UTAMA: TOMBOL PENGUBAH BAHASA (UI/UX)
-window.toggleBahasa = function() {
-    bahasaSaatIni = bahasaSaatIni === 'id' ? 'en' : 'id';
-    const t = terjemahan[bahasaSaatIni];
-
-    // 1. Ubah Placeholder Search
-    const searchInput = document.getElementById('search-input');
-    if(searchInput) searchInput.placeholder = t.cariLokasi;
-    
-    // 2. Ubah Teks Tombol Lapor
-    const laporBtn = document.querySelector('.lapor-warga-control');
-    if(laporBtn) { laporBtn.innerHTML = isReportingMode ? t.laporBatal : t.laporCepat; }
-    
-    // 3. Render Ulang Legenda
-    window.renderLegendaHTML();
-    
-    // 4. Tutup Popup yang Sedang Terbuka (agar saat dibuka lagi menyesuaikan bahasa baru)
-    map.closePopup();
-
-    // 5. Ubah label Lokasi Anda pada userMarker (jika aktif)
-    if (userMarker) {
-       userMarker.setTooltipContent(t.labelLokasiAnda);
-    }
-    
-    // Ganti teks pada tombol pengganti
-    document.getElementById('btn-bahasa').innerText = bahasaSaatIni === 'id' ? "🌐 ID / EN" : "🌐 EN / ID";
-};
-
-// ==========================================
 // 9. GALERI FOTO
 // ==========================================
 window.bukaGaleriFoto = function(index, event) {
@@ -605,4 +526,122 @@ window.geserGaleri = function(arah) {
 window.tutupGaleriFoto = function() {
     const overlay = document.getElementById('galeri-overlay');
     if (overlay) { overlay.remove(); }
+};
+
+// ==========================================
+// 8. FITUR LAPOR WARGA (TRIAGE) & TOGGLE BAHASA
+// ==========================================
+let isReportingMode = false;
+const laporControl = L.control({ position: 'topright' });
+
+laporControl.onAdd = function(map) {
+    const btn = L.DomUtil.create('button', 'lapor-warga-control');
+    btn.innerHTML = terjemahan[bahasaSaatIni].laporCepat;
+    
+    L.DomEvent.on(btn, 'click', function(e) {
+        L.DomEvent.stopPropagation(e); 
+        isReportingMode = !isReportingMode; 
+        const t = terjemahan[bahasaSaatIni];
+        
+        if (isReportingMode) {
+            btn.innerHTML = t.laporBatal;
+            btn.classList.add('active');
+            document.getElementById('map').classList.add('reporting-mode');
+            alert(t.alertLaporAktif); 
+        } else {
+            btn.innerHTML = t.laporCepat;
+            btn.classList.remove('active');
+            document.getElementById('map').classList.remove('reporting-mode');
+        }
+    });
+    return btn;
+};
+laporControl.addTo(map);
+
+map.on('click', function(e) {
+    if (isReportingMode) {
+        const lat = e.latlng.lat.toFixed(6);
+        const lng = e.latlng.lng.toFixed(6);
+        
+        let popupLaporHTML = `
+            <div style="text-align: center; min-width: 200px; padding: 5px;">
+                <h4 style="margin: 0 0 10px 0; color: #e74c3c; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; font-size: 14px;">
+                    Tujuan Laporan
+                </h4>
+                <p style="font-size: 11px; color: #7f8c8d; margin-bottom: 12px; font-weight: bold;">
+                    Lokasi: ${lat}, ${lng}
+                </p>
+
+                <button onclick="window.prosesKirimLaporan('keamanan', ${lat}, ${lng})" 
+                        style="width: 100%; margin-bottom: 6px; padding: 8px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    🚨 Darurat Keamanan (Polisi)
+                </button>
+
+                <button onclick="window.prosesKirimLaporan('kesehatan', ${lat}, ${lng})" 
+                        style="width: 100%; margin-bottom: 6px; padding: 8px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    🏥 Darurat Medis (Bidan)
+                </button>
+
+                <button onclick="window.prosesKirimLaporan('infrastruktur', ${lat}, ${lng})" 
+                        style="width: 100%; margin-bottom: 6px; padding: 8px; background: #e67e22; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                    🏗️ Lapor Jalan/Fasilitas Rusak
+                </button>
+            </div>
+        `;
+
+        L.popup({ closeOnClick: false, autoClose: false })
+            .setLatLng(e.latlng)
+            .setContent(popupLaporHTML)
+            .openOn(map);
+
+        isReportingMode = false;
+        const btn = document.querySelector('.lapor-warga-control');
+        btn.innerHTML = terjemahan[bahasaSaatIni].laporCepat;
+        btn.classList.remove('active');
+        document.getElementById('map').classList.remove('reporting-mode');
+    }
+});
+
+window.prosesKirimLaporan = function(kategori, lat, lng) {
+    map.closePopup(); 
+    
+    let urlTujuan = '';
+    let templateGmaps = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+    
+    if (kategori === 'keamanan') {
+        let noPolisi = "62895392011414"; // Ganti dengan nomor polisi asli
+        let pesan = encodeURIComponent(`*LAPORAN DARURAT KEAMANAN (PANIC BUTTON)*\n\nMohon bantuan segera, ada indikasi gangguan keamanan/kejahatan di titik ini:\n${templateGmaps}\n\nPengirim: Warga Desa Tulis`);
+        urlTujuan = `https://wa.me/${noPolisi}?text=${pesan}`;
+        
+    } else if (kategori === 'kesehatan') {
+        let noBidan = "6289876543210"; // Ganti dengan nomor bidan asli
+        let pesan = encodeURIComponent(`*LAPORAN DARURAT MEDIS*\n\nMohon bantuan medis segera di titik lokasi ini:\n${templateGmaps}\n\nPengirim: Warga Desa Tulis`);
+        urlTujuan = `https://wa.me/${noBidan}?text=${pesan}`;
+        
+    } else if (kategori === 'infrastruktur') {
+        urlTujuan = `https://docs.google.com/forms/d/e/1FAIpQLScA-jsmUPdBB_sa-eftZU5gCZWxMR3q5FDGNQOsRLA1MT_kuw/viewform?usp=pp_url&entry.1856517992=${lat}&entry.1981551024=${lng}`;
+    }
+
+    window.open(urlTujuan, '_blank');
+};
+
+// LOGIKA UTAMA: TOMBOL PENGUBAH BAHASA (UI/UX)
+window.toggleBahasa = function() {
+    bahasaSaatIni = bahasaSaatIni === 'id' ? 'en' : 'id';
+    const t = terjemahan[bahasaSaatIni];
+
+    const searchInput = document.getElementById('search-input');
+    if(searchInput) searchInput.placeholder = t.cariLokasi;
+    
+    const laporBtn = document.querySelector('.lapor-warga-control');
+    if(laporBtn) { laporBtn.innerHTML = isReportingMode ? t.laporBatal : t.laporCepat; }
+    
+    window.renderLegendaHTML();
+    map.closePopup();
+
+    if (userMarker) {
+       userMarker.setTooltipContent(t.labelLokasiAnda);
+    }
+    
+    document.getElementById('btn-bahasa').innerText = bahasaSaatIni === 'id' ? "🌐 Ganti Bahasa" : "🌐 Change Language";
 };
