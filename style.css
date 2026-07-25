@@ -471,7 +471,7 @@ body, html {
     /* 3. MENGANGKAT LEGENDA */
     /* Karena watermark sekarang di kanan bawah, kita harus angkat tombol Legenda sedikit agar tidak bertumpukan */
     .leaflet-bottom.leaflet-right {
-        bottom: 45px !important; 
+        bottom: 35px !important; 
     }
 
     /* 4. Animasi Slide Legenda Khusus Mobile */
