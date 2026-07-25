@@ -445,8 +445,8 @@ body, html {
     }
 
 
-   /* 2. Pengaturan Khusus di Layar HP (Mobile) */
-    @media (max-width: 768px) {
+    /* 2. Pengaturan Khusus di Layar HP (Mobile) */
+@media (max-width: 768px) {
     .leaflet-control-attribution {
         position: fixed !important; 
         z-index: 10000 !important; /* Pastikan selalu di lapisan teratas */
@@ -476,7 +476,6 @@ body, html {
         bottom: 50px !important; 
     }
 }
-    }
 
     /* 3. MENGANGKAT LEGENDA */
     /* Karena watermark sekarang di kanan bawah, kita harus angkat tombol Legenda sedikit agar tidak bertumpukan */
