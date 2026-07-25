@@ -494,10 +494,10 @@ body, html {
 
     /* 7. Penyesuaian Watermark Tim KKN di HP */
     .leaflet-control-attribution {
-        position: absolute !important; 
-        left: auto !important;      
-        right: 0 !important;        /* Posisikan nempel ke kanan */
-        bottom: 15px !important;    /* Angkat ke atas garis merah status bar */
+    bottom: 25px !important; /* Jarak dari bawah */
+    left: 10px !important;   /* Jarak dari kiri */
+    top: auto !important;    /* Matikan tarikan atas */
+    right: auto !important;  /* Matikan tarikan kanan */
         
         writing-mode: horizontal-tb !important; /* Kembalikan arah teks ke horizontal */
         transform: none !important;             
