@@ -418,21 +418,61 @@ body, html {
    Media Query untuk Responsivitas Mobile (HP)
    ========================================== */
 @media (max-width: 768px) {
-    /* 1. Sesuaikan Popup */
-    .popup-content { max-width: 220px; }
-    .popup-content h3 { font-size: 13px; }
-    .popup-gallery { flex-direction: column; gap: 5px; }
-    .popup-gallery figure { width: 100%; }
-    .popup-gallery img { height: 80px; }
+    
+    /* 1. PERBAIKAN FITUR PENCARIAN MOBILE */
+    #search-container { 
+        top: 15px !important; 
+        left: 55px !important; /* Geser ke kanan sedikit agar terbebas dari tombol Zoom */
+        width: 175px !important; /* Kunci batas maksimal lebarnya agar tidak menabrak tombol kanan */
+    }
+    .search-box-wrapper {
+        display: flex !important;
+        width: 100% !important;
+    }
+    #search-input { 
+        padding: 8px !important; 
+        font-size: 11px !important; 
+        width: 100% !important; 
+        min-width: 0 !important; /* Kunci penting: cegah kotak input melebar tak terkendali */
+    }
+    #search-btn { 
+        padding: 8px 12px !important; 
+        font-size: 12px !important; 
+        flex-shrink: 0 !important; /* Kunci penting: cegah tombol kaca pembesar gepeng atau hilang */
+    }
+    #search-suggestions {
+        width: 100% !important; /* Samakan lebar rekomendasi dengan kotak pencarian */
+    }
 
-    /* 2. Sesuaikan Search Bar agar tidak menabrak tombol zoom */
-    #search-container { top: 10px; left: 50px; }
-    #search-input { width: 130px; padding: 6px; font-size: 11px; }
-    #search-btn { padding: 6px 10px; font-size: 11px; }
 
-    /* 3. Posisi Filter Kategori */
-    #filter-container { top: 10px; right: 10px; }
-    #filter-toggle-btn { padding: 6px 10px; font-size: 11px; }
+    /* 2. PERBAIKAN WATERMARK TIM KKN */
+    .leaflet-control-attribution {
+        position: fixed !important; /* Paksa lepas dari belenggu kontainer Leaflet */
+        left: auto !important;      /* Kunci penting: matikan tarikan dari kiri */
+        right: 0 !important;        /* Tempel kuat ke kanan */
+        bottom: 22px !important;    /* Angkat persis di atas bar koordinat hitam */
+        
+        width: max-content !important; /* Lebar background putih hanya akan seukuran teks */
+        max-width: 75vw !important;    
+        margin: 0 !important;
+        
+        padding: 4px 8px !important;
+        border-radius: 8px 0 0 0 !important; /* Lengkung estetis di sudut kiri atas saja */
+        
+        font-size: 8.5px !important;
+        z-index: 10000 !important; /* Pastikan selalu berada di lapisan paling atas */
+        
+        text-align: right !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    /* 3. MENGANGKAT LEGENDA */
+    /* Karena watermark sekarang di kanan bawah, kita harus angkat tombol Legenda sedikit agar tidak bertumpukan */
+    .leaflet-bottom.leaflet-right {
+        bottom: 45px !important; 
+    }
 
     /* 4. Animasi Slide Legenda Khusus Mobile */
     .leaflet-bottom .leaflet-control.legend-container { margin-bottom: 75px; }
