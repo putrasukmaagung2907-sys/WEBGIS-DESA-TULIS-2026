@@ -445,27 +445,37 @@ body, html {
     }
 
 
-    /* 2. PERBAIKAN WATERMARK TIM KKN */
+   /* 2. Pengaturan Khusus di Layar HP (Mobile) */
+    @media (max-width: 768px) {
     .leaflet-control-attribution {
-        position: fixed !important; /* Paksa lepas dari belenggu kontainer Leaflet */
-        left: auto !important;      /* Kunci penting: matikan tarikan dari kiri */
-        right: 0 !important;        /* Tempel kuat ke kanan */
-        bottom: 22px !important;    /* Angkat persis di atas bar koordinat hitam */
+        position: fixed !important; 
+        z-index: 10000 !important; /* Pastikan selalu di lapisan teratas */
         
-        width: max-content !important; /* Lebar background putih hanya akan seukuran teks */
-        max-width: 75vw !important;    
-        margin: 0 !important;
+        /* =======================================================
+           ATUR POSISI DI SINI (Ubah angka px atau biarkan auto) 
+           Contoh di bawah ini untuk posisi KIRI BAWAH
+           ======================================================= */
+        bottom: 25px !important; /* Jarak dari bawah */
+        left: 10px !important;   /* Jarak dari kiri */
+        top: auto !important;    /* Matikan tarikan dari atas */
+        right: auto !important;  /* Matikan tarikan dari kanan */
         
-        padding: 4px 8px !important;
-        border-radius: 8px 0 0 0 !important; /* Lengkung estetis di sudut kiri atas saja */
-        
+        /* Pengaturan Tampilan Teks & Background */
+        writing-mode: horizontal-tb !important; 
+        transform: none !important;
+        text-align: left !important;
+        padding: 5px 10px !important;
+        border-radius: 6px !important; /* Melengkungkan semua sudut merata */
         font-size: 8.5px !important;
-        z-index: 10000 !important; /* Pastikan selalu berada di lapisan paling atas */
-        
-        text-align: right !important;
         white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        max-width: 70vw !important; 
+    }
+    
+    /* PERBAIKAN LEGENDA: Mengangkat seluruh wadah tombol di kanan bawah */
+    .leaflet-bottom.leaflet-right {
+        bottom: 50px !important; 
+    }
+}
     }
 
     /* 3. MENGANGKAT LEGENDA */
@@ -494,10 +504,10 @@ body, html {
 
     /* 7. Penyesuaian Watermark Tim KKN di HP */
     .leaflet-control-attribution {
-    bottom: 25px !important; /* Jarak dari bawah */
-    left: 10px !important;   /* Jarak dari kiri */
-    top: auto !important;    /* Matikan tarikan atas */
-    right: auto !important;  /* Matikan tarikan kanan */
+        position: absolute !important; 
+        left: auto !important;      
+        right: 0 !important;        /* Posisikan nempel ke kanan */
+        bottom: 15px !important;    /* Angkat ke atas garis merah status bar */
         
         writing-mode: horizontal-tb !important; /* Kembalikan arah teks ke horizontal */
         transform: none !important;             
