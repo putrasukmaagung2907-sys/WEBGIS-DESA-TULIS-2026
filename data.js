@@ -25,6 +25,7 @@ const batasDesaData = {
 // DATA LOKASI (MULTILINGUAL)
 // ==========================================
 const locations = [
+//PUSAT PEMERINTAHAN
     {
         name: "Balai Desa", 
         lat: -6.947617, lng: 109.784071, 
@@ -42,6 +43,39 @@ const locations = [
         imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
     },
     {
+        name: "RT X", 
+        lat: -6.945773, lng: 109.779001, 
+        type: "Pusat Pemerintahan",
+        
+        // Bahasa Indonesia
+        desc: "Pusat administrasi dan pelayanan masyarakat Desa Tulis. bcbvhjabhvbasd vbsdhvbiadbvajshdbvhad s vahdvaj vbjaw dvhbasdv sd hasdv asdbvhas d jvbasidbvba dsvhbasd basd asbdv ausbfv hamnsd bi sfjbv ahisf a fvabsfu vajb svascbf afds ia ffdi isfd vsui bahw vhabsd uasdd vasf  jashvdb absdhv asbd ahbsdj vH HDBVAH SJHDVABSFV ADFJH BIADFD  AIDF ASFF VABUISIFD VA SBASFID AH SF HAHHI",
+        jamOperasional: "Senin - Jumat (08:00 - 15:00)",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The central administrative office and public service center of Tulis Village.",
+        jamOperasional_en: "Monday - Friday (08:00 AM - 03:00 PM)",
+        
+        whatsapp: "6285624166392", 
+        imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
+    },
+    {
+        name: "RT Y", 
+        lat: -6.949852, lng: 109.785131, 
+        type: "Pusat Pemerintahan",
+        
+        // Bahasa Indonesia
+        desc: "Pusat administrasi dan pelayanan masyarakat Desa Tulis. bcbvhjabhvbasd vbsdhvbiadbvajshdbvhad s vahdvaj vbjaw dvhbasdv sd hasdv asdbvhas d jvbasidbvba dsvhbasd basd asbdv ausbfv hamnsd bi sfjbv ahisf a fvabsfu vajb svascbf afds ia ffdi isfd vsui bahw vhabsd uasdd vasf  jashvdb absdhv asbd ahbsdj vH HDBVAH SJHDVABSFV ADFJH BIADFD  AIDF ASFF VABUISIFD VA SBASFID AH SF HAHHI",
+        jamOperasional: "Senin - Jumat (08:00 - 15:00)",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The central administrative office and public service center of Tulis Village.",
+        jamOperasional_en: "Monday - Friday (08:00 AM - 03:00 PM)",
+        
+        whatsapp: "6285624166392", 
+        imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
+    },
+//PUSAT KESEHATAN
+    {
         name: "Posyandu", 
         lat: -6.949139, lng: 109.787277, 
         type: "Fasilitas Kesehatan",
@@ -57,6 +91,7 @@ const locations = [
         whatsapp: "6287810107158", 
         imgSatu: "PSYA.jpg", imgDua: "PSYB.jpg", imgTiga: "PSYC.jpg"
     },
+//FASILITAS PENDIDIKAN
     {
         name: "SDN Tulis 01", 
         lat: -6.949718, lng: 109.788332, 
@@ -71,6 +106,7 @@ const locations = [
         whatsapp: "",
         imgSatu: "SDN1A.jpg", imgDua: "SDN1B.jpg", imgTiga: "SDN1C.jpg"
     },
+//TITIK UMKM
     {
         name: "Seblak", 
         lat: -6.949, lng: 109.786, 
@@ -87,8 +123,9 @@ const locations = [
         whatsapp: "6289876543210",
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
+//FFASILITAS KEAMANAN
     {
-        name: "Poskamling", 
+        name: "Poskamling Tulis Barat", 
         lat: -6.949591, lng: 109.786011, 
         type: "Keamanan Lingkungan",
         
@@ -103,6 +140,39 @@ const locations = [
         whatsapp: "",
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
+    {
+        name: "Poskamling Gondangan", 
+        lat: -6.945758, lng: 109.778930, 
+        type: "Keamanan Lingkungan",
+        
+        // Bahasa Indonesia
+        desc: "Poskamling utama untuk blok utara.",
+        jamOperasional: "Pos Siaga 24 Jam",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The main neighborhood security post for the northern block.",
+        jamOperasional_en: "24-Hour Security Post",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Poskamling", 
+        lat: -6.948546, lng: 109.792585, 
+        type: "Keamanan Lingkungan",
+        
+        // Bahasa Indonesia
+        desc: "Poskamling utama untuk blok utara.",
+        jamOperasional: "Pos Siaga 24 Jam",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The main neighborhood security post for the northern block.",
+        jamOperasional_en: "24-Hour Security Post",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+//FASILITAS IBADAH
     {
         name: "Masjid Tulis", 
         lat: -6.949011, lng: 109.787278, 

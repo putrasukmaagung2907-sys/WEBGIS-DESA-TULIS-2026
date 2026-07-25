@@ -184,7 +184,7 @@ L.geoJSON(jalanPanturaData, {
 
 function getMarkerColor(kategori) {
     switch(kategori) {
-        case "Pusat Pemerintahan": return "#9b59b6"; case "Fasilitas Ibadah": return "#5965b6";  
+        case "Pusat Pemerintahan": return "#9b59b6"; case "Fasilitas Ibadah": return "#cccc34";  
         case "Fasilitas Kesehatan": return "#e74c3c"; case "Fasilitas Pendidikan": return "#2ecc71"; 
         case "UMKM": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
     }
@@ -307,15 +307,81 @@ window.buatRute = function(index, event) {
     });
 };
 
-document.getElementById('search-btn').addEventListener('click', function() {
-    let query = document.getElementById('search-input').value.toLowerCase();
-    let found = searchData.find(item => item.name.includes(query));
+// ==========================================
+// FITUR PENCARIAN DENGAN REKOMENDASI (AUTO-COMPLETE HURUF AWAL)
+// ==========================================
+const searchInput = document.getElementById('search-input');
+const searchBtn = document.getElementById('search-btn');
+const searchSuggestions = document.getElementById('search-suggestions');
+
+// Fungsi Utama: Eksekusi Terbangkan Peta ke Lokasi
+function jalankanPencarian(query) {
+    // UBAH DI SINI: Gunakan startsWith agar pencarian tombol juga berdasarkan awalan
+    let found = searchData.find(item => item.name.startsWith(query));
     
     if(found && query !== "") {
         map.flyTo([found.lat, found.lng], 18, { animate: true, duration: 1.5 });
         setTimeout(() => found.marker.openPopup(), 1500);
+        searchSuggestions.classList.add('hidden'); // Sembunyikan list setelah ketemu
     } else {
         alert(terjemahan[bahasaSaatIni].alertTidakKetemu);
+    }
+}
+
+// 1. Saat tombol Kaca Pembesar diklik
+searchBtn.addEventListener('click', function() {
+    let query = searchInput.value.toLowerCase().trim();
+    jalankanPencarian(query);
+});
+
+// 2. Saat warga mengetik huruf di keyboard (Fitur Auto-Complete)
+searchInput.addEventListener('input', function() {
+    let query = this.value.toLowerCase().trim();
+    searchSuggestions.innerHTML = ''; // Kosongkan rekomendasi sebelumnya
+    
+    // Jika input kosong, sembunyikan kotak putihnya
+    if (query === '') {
+        searchSuggestions.classList.add('hidden');
+        return;
+    }
+
+    // UBAH DI SINI: Menggunakan startsWith() agar hanya mencocokkan huruf awal
+    let matches = searchData.filter(item => item.name.startsWith(query));
+
+    // Jika ada yang cocok, tampilkan list ke layar
+    if (matches.length > 0) {
+        searchSuggestions.classList.remove('hidden');
+        
+        matches.forEach(match => {
+            let li = document.createElement('li');
+            li.textContent = match.name; 
+            
+            // Jika salah satu rekomendasi diklik oleh warga
+            li.addEventListener('click', function() {
+                // Masukkan nama ke dalam kotak input, lalu langsung terbangkan peta
+                searchInput.value = match.name.replace(/\b\w/g, l => l.toUpperCase());
+                jalankanPencarian(match.name);
+            });
+            
+            searchSuggestions.appendChild(li);
+        });
+    } else {
+        // Sembunyikan kalau diketik sembarangan dan tidak ada di JSON
+        searchSuggestions.classList.add('hidden'); 
+    }
+});
+
+// 3. Sembunyikan kotak rekomendasi jika warga asal klik di tempat lain (di peta)
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('search-container').contains(e.target)) {
+        searchSuggestions.classList.add('hidden');
+    }
+});
+
+// 3. Sembunyikan kotak rekomendasi jika warga asal klik di tempat lain (di peta)
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('search-container').contains(e.target)) {
+        searchSuggestions.classList.add('hidden');
     }
 });
 

@@ -133,7 +133,7 @@ body, html {
 }
 
 /* ==========================================
-   Panel Pencarian (Search)
+   Panel Pencarian (Search) & Rekomendasi
    ========================================== */
 #search-container { 
     position: absolute; 
@@ -141,17 +141,29 @@ body, html {
     left: 60px; 
     z-index: 1000; 
     display: flex; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3); 
+    flex-direction: column; /* Agar list rekomendasi turun ke bawah kotak */
     border-radius: 4px; 
-    overflow: hidden; 
+    width: 260px; /* Menyamakan lebar kotak pencarian dengan tombol */
 }
+
+/* Kotak input dan tombol (agar menyatu dan melengkung rapi) */
+.search-box-wrapper {
+    display: flex;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    background: white;
+    width: 100%;
+}
+
 #search-input { 
     border: none; 
     padding: 10px; 
-    width: 220px; 
+    flex-grow: 1; /* Input memakan sisa lebar yang ada */
     font-size: 13px; 
     outline: none; 
 }
+
 #search-btn { 
     background: #3498db; 
     color: white; 
@@ -160,8 +172,41 @@ body, html {
     cursor: pointer; 
     font-size: 14px; 
 }
-#search-btn:hover { 
-    background: #2980b9; 
+#search-btn:hover { background: #2980b9; }
+
+/* Tampilan Daftar Rekomendasi (Auto-complete) */
+#search-suggestions {
+    list-style: none;
+    margin: 2px 0 0 0;
+    padding: 0;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    max-height: 200px; /* Tinggi maksimal sebelum scroll */
+    overflow-y: auto;
+    width: 100%;
+}
+
+#search-suggestions.hidden {
+    display: none;
+}
+
+#search-suggestions li {
+    padding: 10px 12px;
+    font-size: 13px;
+    color: #2c3e50;
+    cursor: pointer;
+    border-bottom: 1px solid #ecf0f1;
+    text-transform: capitalize; /* Otomatis membuat awalan kata menjadi huruf besar */
+}
+
+#search-suggestions li:last-child {
+    border-bottom: none;
+}
+
+#search-suggestions li:hover {
+    background-color: #3498db;
+    color: white;
 }
 
 /* ==========================================
@@ -229,7 +274,7 @@ body, html {
 
 /* Warna tombol filter aktif */
 .filter-btn[data-category="Pusat Pemerintahan"].active { background-color: #9b59b6; }
-.filter-btn[data-category="Fasilitas Ibadah"].active { background-color: #5965b6; }
+.filter-btn[data-category="Fasilitas Ibadah"].active { background-color: #cccc34; }
 .filter-btn[data-category="Fasilitas Kesehatan"].active { background-color: #e74c3c; }
 .filter-btn[data-category="Fasilitas Pendidikan"].active { background-color: #2ecc71; }
 .filter-btn[data-category="UMKM"].active { background-color: #631861; }
@@ -412,7 +457,7 @@ body, html {
         position: absolute !important; 
         left: auto !important;      
         right: 0 !important;        /* Posisikan nempel ke kanan */
-        bottom: 20px !important;    /* Angkat ke atas garis merah status bar */
+        bottom: 15px !important;    /* Angkat ke atas garis merah status bar */
         
         writing-mode: horizontal-tb !important; /* Kembalikan arah teks ke horizontal */
         transform: none !important;             

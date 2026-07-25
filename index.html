@@ -20,8 +20,13 @@
 <body>
     <!-- (Bagian HTML lainnya tetap sama persis seperti sebelumnya) -->
     <div id="search-container">
-        <input type="text" id="search-input" placeholder="Cari lokasi">
-        <button id="search-btn">🔍</button>
+        <!-- Wadah input dan tombol -->
+        <div class="search-box-wrapper">
+            <input type="text" id="search-input" placeholder="Cari lokasi" autocomplete="off">
+            <button id="search-btn">🔍</button>
+        </div>
+        <!-- Wadah (List) untuk memunculkan rekomendasi huruf yang diketik -->
+        <ul id="search-suggestions" class="hidden"></ul>
     </div>
 
     <div id="filter-container">
