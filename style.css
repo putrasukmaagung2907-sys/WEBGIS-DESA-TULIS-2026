@@ -248,6 +248,28 @@ body, html {
     border: 1px solid #3498db;
     min-width: 170px;
     display: none; 
+    
+    /* KUNCI UTAMA: Membatasi tinggi panel dan memunculkan scroll */
+    max-height: 185px; /* Angka ini disetel untuk menampilkan ~4 tombol. Bisa Anda naik/turunkan jika kurang pas */
+    overflow-y: auto;  
+}
+
+/* KODE BARU: Mempercantik desain Scrollbar khusus untuk panel filter */
+#filter-panel::-webkit-scrollbar {
+    width: 6px;
+}
+#filter-panel::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+#filter-panel::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 8px;
+}
+#filter-panel::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
 }
 
 #filter-panel.show {
@@ -273,14 +295,21 @@ body, html {
 }
 
 /* Warna tombol filter aktif */
-.filter-btn[data-category="Pusat Pemerintahan"].active { background-color: #9b59b6; }
+.filter-btn[data-category="Pusat Pemerintahan"].active { background-color: #585858; }
 .filter-btn[data-category="Fasilitas Ibadah"].active { background-color: #cccc34; }
 .filter-btn[data-category="Fasilitas Kesehatan"].active { background-color: #e74c3c; }
 .filter-btn[data-category="Fasilitas Pendidikan"].active { background-color: #2ecc71; }
 .filter-btn[data-category="UMKM"].active { background-color: #631861; }
 .filter-btn[data-category="Keamanan Lingkungan"].active { background-color: #34495e; }
-.filter-btn[data-category="Jalan Desa"].active { background-color: #c9a01a; }
+.filter-btn[data-category="Jalan Desa"].active { background-color: #d4c6c6; }
 .filter-btn[data-category="Jalan Pantura"].active { background-color: #2c12f3; }
+.filter-btn[data-category="Tulis Sari"].active { background-color: rgb(0, 83, 134); } /* Kuning/Emas */
+.filter-btn[data-category="Gondangan"].active { background-color: #825b4a; } /* Cokelat */
+.filter-btn[data-category="Pesawahan"].active { background-color: #72659d; } /* Ungu */
+.filter-btn[data-category="Tulis Barat"].active { background-color: #32a852; } /* Hijau */
+
+/* Warna tombol filter aktif (bawaan) */
+.filter-btn[data-category="Pusat Pemerintahan"].active { background-color: #585858; }
 
 /* Gaya tombol saat filter dimatikan */
 .filter-btn:not(.active) {
@@ -288,6 +317,36 @@ body, html {
     color: #bdc3c7;
     text-decoration: line-through;
     opacity: 0.7;
+}
+
+/* ==========================================
+   TOMBOL TAMPILKAN SEMUA / SEMBUNYIKAN SEMUA
+   ========================================== */
+.filter-action-wrapper {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.filter-action-btn {
+    flex: 1;
+    padding: 6px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    transition: opacity 0.2s ease;
+}
+.filter-action-btn:hover { 
+    opacity: 0.8; 
+}
+.btn-semua { 
+    background-color: #27ae60; /* Warna Hijau */
+} 
+.btn-kosong { 
+    background-color: #c0392b; /* Warna Merah */
 }
 
 /* ==========================================
@@ -927,4 +986,44 @@ body, html {
     backdrop-filter: blur(4px) !important;
     color: white !important;
     border: 2px solid #3498db !important;
+}
+
+/* ==========================================
+   STYLING CUSTOM ICON (EMOJI MARKER BENTUK PIN)
+   ========================================== */
+.custom-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.custom-marker-wrapper {
+    width: 18px;
+    height: 18px;
+    /* Kita tangkap warna dari JavaScript menggunakan variabel CSS */
+    background-color: var(--warna-marker); 
+    
+    /* RAHASIA BENTUK PIN: Sudut kanan bawah dibikin runcing (0) */
+    border-radius: 50% 50% 50% 0; 
+    border: 2px solid #ffffff;
+    box-shadow: -2px 2px 4px rgba(0,0,0,0.5); /* Arah bayangan disesuaikan */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Putar 45 derajat berlawanan jarum jam agar bagian runcing menghadap ke bawah */
+    transform: rotate(-45deg); 
+    transform-origin: center center;
+    transition: transform 0.2s ease;
+}
+
+.custom-marker-wrapper:hover {
+    /* Saat disentuh: pertahankan rotasi, lalu perbesar ukurannya */
+    transform: rotate(-45deg) scale(1.15); 
+    cursor: pointer;
+}
+
+.marker-emoji {
+    /* Putar balik emojinya searah jarum jam agar tegak (tidak ikut miring) */
+    transform: rotate(45deg); 
+    font-size: 13px;
 }

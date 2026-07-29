@@ -29,10 +29,26 @@
         <ul id="search-suggestions" class="hidden"></ul>
     </div>
 
-    <div id="filter-container">
+<div id="filter-container">
         <button id="filter-toggle-btn">⚙️ Filter Kategori</button>
         <div id="filter-panel" class="hidden">
-            <!-- (Tombol filter tetap sama) -->
+            
+            <!-- Tombol Tampil Semua & Sembunyi Semua -->
+            <!-- Tombol Tampil Semua & Sembunyi Semua -->
+            <div class="filter-action-wrapper">
+                <button id="btn-toggle-all" class="filter-action-btn btn-kosong" data-state="hide">Sembunyikan Semua</button>
+            </div>
+            <hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">
+            <hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">
+            
+            <!-- Filter Batas Dusun -->
+            <button class="filter-btn active" data-category="Tulis Sari">Tulis Sari</button>
+            <button class="filter-btn active" data-category="Gondangan">Gondangan</button>
+            <button class="filter-btn active" data-category="Pesawahan">Pesawahan</button>
+            <button class="filter-btn active" data-category="Tulis Barat">Tulis Barat</button>
+            <hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">
+            
+            <!-- Filter Kategori Lainnya -->
             <button class="filter-btn active" data-category="Pusat Pemerintahan">Pusat Pemerintahan</button>
             <button class="filter-btn active" data-category="Fasilitas Ibadah">Fasilitas Ibadah</button>
             <button class="filter-btn active" data-category="Fasilitas Kesehatan">Fasilitas Kesehatan</button>
@@ -42,6 +58,7 @@
             <button class="filter-btn active" data-category="Jalan Desa">Jalan Desa</button>
             <button class="filter-btn active" data-category="Jalan Pantura">Jalan Pantura</button>
         </div>
+    </div>
     </div>
     <!-- Letakkan di dalam tag <body> -->
 <button id="btn-bahasa" onclick="toggleBahasa()" style="position: absolute; top: 115px; right: 15px; z-index: 1000; padding: 8px 12px; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">

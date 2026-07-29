@@ -13,11 +13,11 @@ const terjemahan = {
         alertLaporKonfirm: "Anda akan melaporkan lokasi pada:\nLintang: {lat}\nBujur: {lng}\n\nLanjutkan mengisi formulir laporan?",
         alertTungguGPS: "Mohon tunggu sebentar, sistem sedang mencari titik lokasi GPS Anda...",
         alertTidakKetemu: "Lokasi tidak ditemukan! Pastikan nama tepat.",
-        btnDetail: "Detail⬇️",
+        btnDetail: "Detail",
         txtKategori: "Kategori",
         txtOperasional: "Operasional",
         txtInfo: "Info",
-        txtKembali: "⬅️ Kembali",
+        txtKembali: "Kembali",
         txtNavigasi: "Navigasi ke Sini",
         txtChatWA: "💬 Chat Pemilik/Admin",
         txtRuteHitung: "Menghitung rute...",
@@ -42,11 +42,11 @@ const terjemahan = {
         alertLaporKonfirm: "You are about to report a location at:\nLatitude: {lat}\nLongitude: {lng}\n\nContinue to the reporting form?",
         alertTungguGPS: "Please wait, the system is finding your GPS location...",
         alertTidakKetemu: "Location not found! Please check the spelling.",
-        btnDetail: "Details⬇️",
+        btnDetail: "Details",
         txtKategori: "Category",
         txtOperasional: "Opening Hours",
         txtInfo: "Info",
-        txtKembali: "⬅️ Back",
+        txtKembali: "Back",
         txtNavigasi: "Navigate Here",
         txtChatWA: "💬 Chat Owner/Admin",
         txtRuteHitung: "Calculating route...",
@@ -140,9 +140,11 @@ if (qrLat && qrLng) {
 map.createPane('paneMasking'); map.getPane('paneMasking').style.zIndex = 350;
 map.createPane('paneJalanDesa'); map.getPane('paneJalanDesa').style.zIndex = 351;
 map.createPane('paneJalanPantura'); map.getPane('paneJalanPantura').style.zIndex = 352;
-map.createPane('paneBatasDesa'); map.getPane('paneBatasDesa').style.zIndex = 353; 
+map.createPane('paneBatasDesa'); map.getPane('paneBatasDesa').style.zIndex = 353;
+map.createPane('paneBatasDusun'); map.getPane('paneBatasDusun').style.zIndex = 250; 
 map.getPane('paneMasking').style.pointerEvents = 'none';
 map.getPane('paneBatasDesa').style.pointerEvents = 'none';
+map.createPane('paneMasking'); map.getPane('paneMasking').style.zIndex = 350;
 
 const desaCoords = batasDesaData.features[0].geometry.coordinates[0][0].map(coord => [coord[1], coord[0]]);
 L.polygon([ [[-90, -180], [90, -180], [90, 180], [-90, 180]], desaCoords ], {
@@ -157,13 +159,18 @@ function konversiKoordinat(coords) {
 
 L.geoJSON(batasDesaData, {
     pane: 'paneBatasDesa', smoothFactor: 2.0,
-    style: function(feature) { return { color: "#f9f9f9", weight: 3, fillOpacity: 0, dashArray: "5, 5" }; }
+    style: function(feature) { return { color: "#3cc932", weight: 3, fillOpacity: 0, dashArray: "5, 5" }; }
 }).addTo(map);
 
 // ==========================================
 // 4. GROUPING, FILTERING & MARKER CLUSTER
 // ==========================================
 const layerGroups = {
+    // Tambahan Layer Dusun
+    "Tulis Sari": L.layerGroup().addTo(map),
+    "Gondangan": L.layerGroup().addTo(map),
+    "Pesawahan": L.layerGroup().addTo(map),
+    "Tulis Barat": L.layerGroup().addTo(map),
     "Pusat Pemerintahan": L.markerClusterGroup().addTo(map),
     "Fasilitas Ibadah": L.markerClusterGroup().addTo(map),
     "Fasilitas Kesehatan": L.markerClusterGroup().addTo(map),
@@ -175,105 +182,146 @@ const layerGroups = {
 };
 
 L.geoJSON(jalanDesaData, { 
-    pane: 'paneJalanDesa', coordsToLatLng: konversiKoordinat, smoothFactor: 1.5, style: { color: "#c9a01a", weight: 3, opacity: 0.8 } 
+    pane: 'paneJalanDesa', coordsToLatLng: konversiKoordinat, smoothFactor: 1.5, style: { color: "#d4c6c6", weight: 3, opacity: 0.8 } 
 }).addTo(layerGroups["Jalan Desa"]);
 
 L.geoJSON(jalanPanturaData, { 
     pane: 'paneJalanPantura', coordsToLatLng: konversiKoordinat, smoothFactor: 1.5, style: { color: "#2c12f3", weight: 6, opacity: 0.9 } 
 }).bindTooltip("Jl. PANTURA", { sticky: true, className: 'label-tempat' }).addTo(layerGroups["Jalan Pantura"]);
 
+// FUNGSI GAYA & RENDER BATAS DUSUN
+function styleDusun(warnaHex) {
+    return {
+        pane: 'paneBatasDusun', // Memastikan layer terkunci di paling bawah
+        color: warnaHex,        // Warna garis batas
+        weight: 2,              // Ketebalan garis
+        fillColor: warnaHex,    // Warna blok area
+        fillOpacity: 0.35       // Tingkat transparansi
+    };
+}
+
+// Render data dusun dari EPSG:32749 ke EPSG:4326 lalu masukkan ke map
+L.geoJSON(tulisSariData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#b59b38") })
+  .bindTooltip("Dusun Tulis Sari", { sticky: true, className: 'label-tempat' })
+  .addTo(layerGroups["Tulis Sari"]);
+
+L.geoJSON(gondanganData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#825b4a") })
+  .bindTooltip("Dusun Gondangan", { sticky: true, className: 'label-tempat' })
+  .addTo(layerGroups["Gondangan"]);
+
+L.geoJSON(pesawahanData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#72659d") })
+  .bindTooltip("Dusun Pesawahan", { sticky: true, className: 'label-tempat' })
+  .addTo(layerGroups["Pesawahan"]);
+
+L.geoJSON(tulisBaratData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#32a852") })
+  .bindTooltip("Dusun Tulis Barat", { sticky: true, className: 'label-tempat' })
+  .addTo(layerGroups["Tulis Barat"]);
+
 function getMarkerColor(kategori) {
     switch(kategori) {
-        case "Pusat Pemerintahan": return "#9b59b6"; case "Fasilitas Ibadah": return "#cccc34";  
+        case "Pusat Pemerintahan": return "#585858"; case "Fasilitas Ibadah": return "#cccc34";  
         case "Fasilitas Kesehatan": return "#e74c3c"; case "Fasilitas Pendidikan": return "#2ecc71"; 
         case "UMKM": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
     }
 }
 
-let searchData = [];
+// FUNGSI PEMBUAT SIMBOL IKON (EMOJI) BENTUK PIN
+function getCustomIcon(kategori) {
+    let emoji = "📍";
+    let color = getMarkerColor(kategori);
 
-function getPopupAwalHTML(index) {
-    const loc = locations[index];
-    const t = terjemahan[bahasaSaatIni];
-    return `
-        <div class="popup-content" style="text-align: center; min-width: 150px;">
-            <h3 style="margin-bottom: 8px; border-bottom: 2px solid #5e3ce7; padding-bottom: 5px;">${loc.name}</h3>
-            <button class="btn-detail-popup" onclick="window.tampilkanDetailBaru(${index}, event)">${t.btnDetail}</button>
-        </div>
-    `;
+    switch(kategori) {
+        case "Pusat Pemerintahan": emoji = "🏛️"; break;
+        case "Fasilitas Ibadah": emoji = "🕌"; break; 
+        case "Fasilitas Kesehatan": emoji = "🏥"; break;
+        case "Fasilitas Pendidikan": emoji = "🎓"; break;
+        case "UMKM": emoji = "🏪"; break; 
+        case "Keamanan Lingkungan": emoji = "🛡️"; break; 
+    }
+
+    return L.divIcon({
+        className: 'custom-div-icon',
+        // Kirim warna ke CSS melalui var(--warna-marker) dan bungkus emoji dalam <span>
+        html: `<div class="custom-marker-wrapper" style="--warna-marker: ${color};"><span class="marker-emoji">${emoji}</span></div>`,
+        iconSize: [0, 0], 
+        
+        // KUNCI PRESISI: Menggeser titik tumpu (Y) agar pas mendarat di ujung lancip panah bawah
+        iconAnchor: [14, 34], 
+        popupAnchor: [0, -34], // Popup akan muncul dari bagian atas balon
+        tooltipAnchor: [-2, -10] // Teks label nempel tepat di bagian perut kanan balon
+    });
 }
 
-locations.forEach((loc, index) => {
-    const markerColor = getMarkerColor(loc.type);
-    const classKategori = 'label-' + loc.type.toLowerCase().replace(/\s+/g, '-');
-    
-    const marker = L.circleMarker([loc.lat, loc.lng], {
-        radius: 6, fillColor: markerColor, color: "#ffffff", weight: 1.5, fillOpacity: 1
-    })
-    .bindTooltip(loc.name, { permanent: true, direction: 'right', offset: [0, 0], className: 'label-tempat ' + classKategori })
-    .bindPopup(getPopupAwalHTML(index));
 
-    if(layerGroups[loc.type]) { marker.addTo(layerGroups[loc.type]); } 
-    searchData.push({ name: loc.name.toLowerCase(), marker: marker, lat: loc.lat, lng: loc.lng });
+let searchData = [];
 
-    marker.on('popupclose', function() {
-        setTimeout(() => { marker.setPopupContent(getPopupAwalHTML(index)); }, 300);
-    });
-});
-
-window.tampilkanDetailBaru = function(index, event) {
-    if (event) { event.stopPropagation(); event.preventDefault(); }
+// 1. FUNGSI BARU: Langsung buat 1 Popup Lengkap (Gambar Thumbnail + Info)
+function getPopupHTML(index) {
     const loc = locations[index];
-    const marker = searchData[index].marker;
     const t = terjemahan[bahasaSaatIni];
     
-    // Logika Penggantian Bahasa pada Data JSON
+    // Logika bahasa
     const deskripsi = (bahasaSaatIni === 'en' && loc.desc_en) ? loc.desc_en : loc.desc;
     const operasional = (bahasaSaatIni === 'en' && loc.jamOperasional_en) ? loc.jamOperasional_en : loc.jamOperasional;
     const katName = t["kat" + loc.type.replace(/\s+/g, '')] || loc.type;
 
+    // Logika tombol WhatsApp
     let waButtonHTML = '';
     if (loc.whatsapp) {
         let nomorWA = loc.whatsapp.startsWith('0') ? '62' + loc.whatsapp.substring(1) : loc.whatsapp;
-        waButtonHTML = `<button type="button" class="wa-btn" onclick="window.open('https://wa.me/${nomorWA}', '_blank'); event.stopPropagation();">${t.txtChatWA}</button>`;
+        waButtonHTML = `<button type="button" class="wa-btn" onclick="window.open('https://wa.me/${nomorWA}', '_blank'); event.stopPropagation();" style="width:100%; margin-bottom:8px; padding:6px; border-radius:4px; text-align:center;">${t.txtChatWA}</button>`;
     }
     
-    const detailHTML = `
-        <div class="popup-content" style="position: relative; min-width: 220px; max-width: 280px; text-align: left;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; margin-bottom: 10px;">
-                <h3 style="margin: 0; border: none; padding: 0; font-size: 15px;">${loc.name}</h3>
-                <button onclick="window.bukaGaleriFoto(${index}, event)" class="btn-lihat-foto" title="Lihat Foto Lokasi">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                </button>
+    // Logika Gambar Utama (imgSatu) langsung ditampilkan
+    let imgThumbnailHTML = '';
+    if(loc.imgSatu && loc.imgSatu !== "") {
+        imgThumbnailHTML = `<img src="${loc.imgSatu}" alt="Foto ${loc.name}" style="width:100%; height:130px; object-fit:cover; border-radius:6px; margin-bottom:10px; border:1px solid #bdc3c7;" onerror="this.style.display='none'">`;
+    }
+
+    // Mengembalikan satu kesatuan kotak HTML
+    return `
+        <div class="popup-content" style="position: relative; min-width: 220px; max-width: 270px; text-align: left; padding-top: 2px;">
+            ${imgThumbnailHTML}
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e74c3c; padding-bottom: 5px; margin-bottom: 8px;">
+                <h3 style="margin: 0; font-size: 15px; border: none; padding: 0;">${loc.name}</h3>
             </div>
             
-            <div style="margin-bottom: 4px; font-size: 13px;"><strong>${t.txtKategori}:</strong> ${katName}</div>
-            <div style="margin-bottom: 4px; font-size: 13px;"><strong>${t.txtOperasional}:</strong> ${operasional}</div>
+            <div style="margin-bottom: 4px; font-size: 12px;"><strong>${t.txtKategori}:</strong> ${katName}</div>
+            <div style="margin-bottom: 4px; font-size: 12px;"><strong>${t.txtOperasional}:</strong> ${operasional}</div>
             
-            <!-- Area Deskripsi Scrollable -->
-            <div style="max-height: 85px; overflow-y: auto; overflow-wrap: break-word; word-wrap: break-word; padding-right: 5px; margin-bottom: 10px; font-size: 13px; line-height: 1.4; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 4px;">
+            <div style="max-height: 85px; overflow-y: auto; overflow-wrap: break-word; word-wrap: break-word; padding-right: 5px; margin-bottom: 10px; font-size: 12px; line-height: 1.4; background: rgba(0,0,0,0.03); padding: 5px; border-radius: 4px;">
                 <strong>${t.txtInfo}:</strong> ${deskripsi}
             </div>
             
             ${waButtonHTML}
             
-            <div style="margin-top: 12px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #bdc3c7; padding-top: 8px;">
-                <button onclick="window.kembaliKeAwal(${index}, event)" style="background: #7f8c8d; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold;">${t.txtKembali}</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #bdc3c7; padding-top: 8px;">
+                <button onclick="window.bukaGaleriFoto(${index}, event)" style="background: #f39c12; color: white; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">📷 Semua Foto</button>
+                
                 <button onclick="window.buatRute(${index}, event)" title="${t.txtNavigasi}" style="background-color: #3498db; color: white; border: none; border-radius: 50%; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
                 </button>
             </div>
         </div>
     `;
-    marker.setPopupContent(detailHTML);
-};
+}
 
-window.kembaliKeAwal = function(index, event) {
-    if (event) { event.stopPropagation(); event.preventDefault(); }
-    searchData[index].marker.setPopupContent(getPopupAwalHTML(index));
-};
+// 2. EKSEKUSI PEMBUATAN TITIK DI PETA
+locations.forEach((loc, index) => {
+    const classKategori = 'label-' + loc.type.toLowerCase().replace(/\s+/g, '-');
+    
+    const marker = L.marker([loc.lat, loc.lng], {
+        icon: getCustomIcon(loc.type)
+    })
+    .bindTooltip(loc.name, { permanent: true, direction: 'right', offset: [0, 0], className: 'label-tempat ' + classKategori })
+    .bindPopup(getPopupHTML(index)); 
+
+    if(layerGroups[loc.type]) { marker.addTo(layerGroups[loc.type]); } 
+    searchData.push({ name: loc.name.toLowerCase(), marker: marker, lat: loc.lat, lng: loc.lng });
+    marker.on('popupclose', function() {
+        setTimeout(() => { marker.setPopupContent(getPopupHTML(index)); }, 300);
+    });
+});
 
 window.buatRute = function(index, event) {
     if (event) { event.stopPropagation(); event.preventDefault(); }
@@ -308,7 +356,7 @@ window.buatRute = function(index, event) {
 };
 
 // ==========================================
-// FITUR PENCARIAN DENGAN REKOMENDASI (AUTO-COMPLETE HURUF AWAL)
+// FITUR PENCARIAN DENGAN REKOMENDASI 
 // ==========================================
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -394,6 +442,52 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
+// ==========================================
+// FITUR TOGGLE TAMPILKAN / SEMBUNYIKAN SEMUA LAYER
+// ==========================================
+const btnToggleAll = document.getElementById('btn-toggle-all');
+const allFilterBtns = document.querySelectorAll('.filter-btn');
+
+if (btnToggleAll) {
+    btnToggleAll.addEventListener('click', function(e) {
+        e.stopPropagation(); // Mencegah menu panel tertutup saat diklik
+        
+        // Cek status tombol saat ini (sedang mode 'hide' atau 'show')
+        const currentState = this.getAttribute('data-state');
+
+        if (currentState === 'hide') {
+            // AKSI: Sembunyikan Semua Layer
+            allFilterBtns.forEach(btn => {
+                if (btn.classList.contains('active')) {
+                    btn.classList.remove('active'); // Matikan warna tombol
+                    const category = btn.getAttribute('data-category');
+                    if (layerGroups[category]) map.removeLayer(layerGroups[category]); // Hapus layer dari peta
+                }
+            });
+            
+            // Ubah wujud tombol menjadi "Tampilkan Semua" (Hijau)
+            this.setAttribute('data-state', 'show');
+            this.className = 'filter-action-btn btn-semua';
+            this.innerHTML = 'Tampilkan Semua';
+            
+        } else {
+            // AKSI: Tampilkan Semua Layer
+            allFilterBtns.forEach(btn => {
+                if (!btn.classList.contains('active')) {
+                    btn.classList.add('active'); // Nyalakan warna tombol
+                    const category = btn.getAttribute('data-category');
+                    if (layerGroups[category]) map.addLayer(layerGroups[category]); // Munculkan layer ke peta
+                }
+            });
+            
+            // Ubah wujud tombol kembali menjadi "Sembunyikan Semua" (Merah)
+            this.setAttribute('data-state', 'hide');
+            this.className = 'filter-action-btn btn-kosong';
+            this.innerHTML = 'Sembunyikan Semua';
+        }
+    });
+}
+
 const filterToggleBtn = document.getElementById('filter-toggle-btn');
 const filterPanel = document.getElementById('filter-panel');
 if (filterToggleBtn && filterPanel) { filterToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); filterPanel.classList.toggle('show'); }); }
@@ -440,19 +534,54 @@ window.toggleLegenda = function() {
 
 window.renderLegendaHTML = function() {
     const t = terjemahan[bahasaSaatIni];
-    const categories = ["Pusat Pemerintahan", "Fasilitas Ibadah", "Fasilitas Kesehatan", "Fasilitas Pendidikan", "UMKM", "Keamanan Lingkungan"];
+    
+    // Kita gabungkan nama kategori dengan emoji yang sesuai
+    const categories = [
+        { cat: "Pusat Pemerintahan", emoji: "🏛️" },
+        { cat: "Fasilitas Ibadah", emoji: "🕌" },
+        { cat: "Fasilitas Kesehatan", emoji: "🏥" },
+        { cat: "Fasilitas Pendidikan", emoji: "🎓" },
+        { cat: "UMKM", emoji: "🏪" },
+        { cat: "Keamanan Lingkungan", emoji: "🛡️" }
+    ];
     
     let content = '<div class="legend-content">';
     content += `<h4>${t.btnLegenda.replace('📜 ', '')} <button type="button" class="close-legend-btn" onclick="window.toggleLegenda()">✖</button></h4>`;
-    categories.forEach(cat => { 
-        let katName = t["kat" + cat.replace(/\s+/g, '')] || cat;
-        content += `<i style="background:${getMarkerColor(cat)}"></i> ${katName}<br>`; 
+    
+    // 1. Kategori Ikon Fasilitas (Kini menggunakan bentuk bulat dengan emoji)
+    categories.forEach(item => { 
+        let katName = t["kat" + item.cat.replace(/\s+/g, '')] || item.cat;
+        let color = getMarkerColor(item.cat);
+        
+        content += `
+            <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                <div style="background-color: ${color}; width: 18px; height: 18px; border-radius: 50%; border: 1px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.4); display: flex; justify-content: center; align-items: center; margin-right: 8px; font-size: 9px;">
+                    ${item.emoji}
+                </div>
+                <span style="font-size: 12px; line-height: 1.2;">${katName}</span>
+            </div>`; 
     });
-    content += `<i style="background:#3498db"></i> ${t.labelLokasiAnda}<br>`;
+    
+    // Ikon Lokasi Anda (Bulat biru polos)
+    content += `
+        <div style="display: flex; align-items: center; margin-bottom: 6px;">
+            <div style="background-color: #3498db; width: 14px; height: 14px; border-radius: 50%; border: 1px solid #fff; margin-right: 10px; margin-left: 2px;"></div>
+            <span style="font-size: 12px;">${t.labelLokasiAnda}</span>
+        </div>`;
+    
+    // 2. Kategori Garis Jalan & Batas Desa
     content += '<hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">';
     content += `<i style="background:#2c12f3; height: 4px; margin-top: 7px; border-radius: 0;"></i> ${t.labelJalanPantura}<br>`;
-    content += `<i style="background:#c9a01a; height: 2px; margin-top: 8px; border-radius: 0;"></i> ${t.labelJalanDesa}<br>`;
-    content += `<i style="background: transparent; border-top: 3px dashed #b1aeae; height: 0; margin-top: 8px; border-radius: 0;"></i> ${t.labelBatasAdmin}<br>`;
+    content += `<i style="background:#d4c6c6; height: 2px; margin-top: 8px; border-radius: 0;"></i> ${t.labelJalanDesa}<br>`;
+    content += `<i style="background: transparent; border-top: 3px dashed #3cc932; height: 0; margin-top: 8px; border-radius: 0;"></i> ${t.labelBatasAdmin}<br>`;
+    
+    // 3. Kategori Blok Area Batas Dusun
+    content += '<hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">';
+    content += `<i style="background: #b59b38; opacity: 0.6; border-radius: 2px; border: 1px solid #b59b38;"></i> Dusun Tulis Sari<br>`;
+    content += `<i style="background: #825b4a; opacity: 0.6; border-radius: 2px; border: 1px solid #825b4a;"></i> Dusun Gondangan<br>`;
+    content += `<i style="background: #72659d; opacity: 0.6; border-radius: 2px; border: 1px solid #72659d;"></i> Dusun Pesawahan<br>`;
+    content += `<i style="background: #32a852; opacity: 0.6; border-radius: 2px; border: 1px solid #32a852;"></i> Dusun Tulis Barat<br>`;
+    
     content += '</div>';
 
     let btn = `<button type="button" id="legend-toggle-btn" onclick="window.toggleLegenda()">${t.btnLegenda}</button>`;
@@ -640,17 +769,17 @@ map.on('click', function(e) {
 
                 <button onclick="window.prosesKirimLaporan('keamanan', ${lat}, ${lng})" 
                         style="width: 100%; margin-bottom: 6px; padding: 8px; background: #2c3e50; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                    🚨 Darurat Keamanan (Polisi)
+                    🚨 Laporan Keamanan
                 </button>
 
                 <button onclick="window.prosesKirimLaporan('kesehatan', ${lat}, ${lng})" 
                         style="width: 100%; margin-bottom: 6px; padding: 8px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                    🏥 Darurat Medis (Bidan)
+                    🏥 Laporan Medis
                 </button>
 
                 <button onclick="window.prosesKirimLaporan('infrastruktur', ${lat}, ${lng})" 
                         style="width: 100%; margin-bottom: 6px; padding: 8px; background: #e67e22; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
-                    🏗️ Lapor Jalan/Fasilitas Rusak
+                    🏗️ Laporan Fasilitas Desa
                 </button>
             </div>
         `;
