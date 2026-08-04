@@ -42,38 +42,6 @@ const locations = [
         whatsapp: "6285624166392", 
         imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
     },
-    {
-        name: "RT X", 
-        lat: -6.945773, lng: 109.779001, 
-        type: "Pusat Pemerintahan",
-        
-        // Bahasa Indonesia
-        desc: "-",
-        jamOperasional: "Senin - Jumat (08:00 - 15:00)",
-        
-        // Bahasa Inggris (Tambahan Baru)
-        desc_en: "The central administrative office and public service center of Tulis Village.",
-        jamOperasional_en: "Monday - Friday (08:00 AM - 03:00 PM)",
-        
-        whatsapp: "6285624166392", 
-        imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
-    },
-    {
-        name: "RT Y", 
-        lat: -6.949852, lng: 109.785131, 
-        type: "Pusat Pemerintahan",
-        
-        // Bahasa Indonesia
-        desc: "Pusat administrasi dan pelayanan masyarakat Desa Tulis. bcbvhjabhvbasd vbsdhvbiadbvajshdbvhad s vahdvaj vbjaw dvhbasdv sd hasdv asdbvhas d jvbasidbvba dsvhbasd basd asbdv ausbfv hamnsd bi sfjbv ahisf a fvabsfu vajb svascbf afds ia ffdi isfd vsui bahw vhabsd uasdd vasf  jashvdb absdhv asbd ahbsdj vH HDBVAH SJHDVABSFV ADFJH BIADFD  AIDF ASFF VABUISIFD VA SBASFID AH SF HAHHI",
-        jamOperasional: "Senin - Jumat (08:00 - 15:00)",
-        
-        // Bahasa Inggris (Tambahan Baru)
-        desc_en: "The central administrative office and public service center of Tulis Village.",
-        jamOperasional_en: "Monday - Friday (08:00 AM - 03:00 PM)",
-        
-        whatsapp: "6285624166392", 
-        imgSatu: "A.jpg", imgDua:"B.jpg", imgTiga: "C.jpg"
-    },
 //PUSAT KESEHATAN
     {
         name: "Posyandu", 
@@ -91,6 +59,23 @@ const locations = [
         whatsapp: "6287810107158", 
         imgSatu: "PSYA.jpg", imgDua: "PSYB.jpg", imgTiga: "PSYC.jpg"
     },
+    {
+        name: "Poliklinik", 
+        lat: -6.948846, lng: 109.794249, 
+        type: "Fasilitas Kesehatan",
+        
+        // Bahasa Indonesia
+        desc: "Pelayanan kesehatan tingkat pertama bagi warga.",
+        jamOperasional: "5 Jam",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "Primary healthcare facility for the local community.",
+        jamOperasional_en: "5 Hours",
+        
+        whatsapp: "6287810107158", 
+        imgSatu: "PSYA.jpg", imgDua: "PSYB.jpg", imgTiga: "PSYC.jpg"
+    },
+
 //FASILITAS PENDIDIKAN
     {
         name: "SDN Tulis 01", 
@@ -106,14 +91,29 @@ const locations = [
         whatsapp: "",
         imgSatu: "SDN1A.jpg", imgDua: "SDN1B.jpg", imgTiga: "SDN1C.jpg"
     },
-//TITIK UMKM
     {
-        name: "Warung Ibu Linarsi", 
+        name: "TK Tulis 02", 
+        lat:  -6.948789, lng: 109.794374, 
+        type: "Fasilitas Pendidikan",       
+        desc: "SD Negeri Tulis 01 merupakan sekolah dasar negeri yang berlokasi di Jl. Raya Tulis No. 45, Desa Tulis, Kecamatan Tulis, Kabupaten Batang, Jawa Tengah. Sekolah ini memiliki NPSN 20322859 dan telah berdiri sejak tahun 1985 berdasarkan SK Pendirian No. 421.2/021/X/43/85 tertanggal 1 April 1985. SD Negeri Tulis 01 dikenal sebagai sekolah yang unggul dan memiliki akreditasi A berdasarkan SK Akreditasi  tertanggal 20 Oktober 2015. Sekolah ini menerapkan sistem pembelajaran sehari penuh dengan 6 hari pembelajaran dalam seminggu. Dengan akses internet Telkom Speedy dan sumber listrik PLN, SD Negeri Tulis 01 siap mendukung proses belajar mengajar yang efektif dan modern",
+        jamOperasional: "Senin - Sabtu (07:00 - 14:00)",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The main public elementary school in Tulis Village.",
+        jamOperasional_en: "Monday - Saturday (07:00 AM - 02:00 PM)",
+        
+        whatsapp: "",
+        imgSatu: "SDN1A.jpg", imgDua: "SDN1B.jpg", imgTiga: "SDN1C.jpg"
+    },
+   
+//TITIK Pelaku Usaha
+    {
+        name: "Toko KAF", 
         lat: -6.949273, lng: 109.785961, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
     
         // Bahasa Indonesia
-        desc: "-.",
+        desc: "-",
         jamOperasional: "-",
         
         // Bahasa Inggris (Tambahan Baru)
@@ -124,12 +124,12 @@ const locations = [
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
     {
-        name: "Warung Ibu Tini dan Pak Yulianto", 
+        name: "Warung Tini", 
         lat: -6.949813, lng: 109.786088, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
     
         // Bahasa Indonesia
-        desc: "-.",
+        desc: "-",
         jamOperasional: "-",
         
         // Bahasa Inggris (Tambahan Baru)
@@ -142,7 +142,7 @@ const locations = [
     {
         name: "Warung Bu HJ Ning", 
         lat: -6.9500165, lng: 109.7883169, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
      
         // Bahasa Indonesia
         desc: "-.",
@@ -156,9 +156,9 @@ const locations = [
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
     {
-        name: "Warung Ibu Asri", 
+        name: "Warung Kopi & Gorengan", 
         lat: -6.949852, lng: 109.786710, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
      
          // Bahasa Indonesia
         desc: "-.",
@@ -172,9 +172,9 @@ const locations = [
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
     {
-        name: "Warung Ibu Endang", 
+        name: "SRC Teka Endang", 
         lat: -6.9492587, lng: 109.7845467, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -190,7 +190,7 @@ const locations = [
     {
         name: "Warung Ibu Barkah", 
         lat: -6.949873, lng: 109.787184, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -205,8 +205,8 @@ const locations = [
     },
     {
         name: "Toko Ibu Damusri", 
-        lat:  -6.950153, lng: 109.789822, 
-        type: "UMKM",
+        lat:  -6.9497935, lng: 109.7857409, 
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -222,7 +222,7 @@ const locations = [
     {
         name: "Warung Ibu Mithun", 
         lat: -6.950130, lng: 109.789293, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -238,7 +238,7 @@ const locations = [
     {
         name: "Warung Ibu Ika", 
         lat:   -6.949773, lng: 109.785771, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -252,9 +252,9 @@ const locations = [
         imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
     },
     {
-        name: "Warung Pak Giswanto", 
+        name: "Toko Istiqomah", 
         lat:  6.949915, lng: 109.784319, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -270,7 +270,7 @@ const locations = [
     {
         name: "Produksi Tapioka", 
         lat:  -6.948308, lng: 109.795359, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -286,7 +286,7 @@ const locations = [
     {
         name: "Produksi Kerupuk Mie Raket", 
         lat:  -6.947636, lng: 109.794701, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -302,7 +302,7 @@ const locations = [
     {
         name: "Produksi Kerupuk Slondok", 
         lat:  -6.948378, lng: 109.795572, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -318,7 +318,7 @@ const locations = [
     {
         name: "Barokah", 
         lat:  -6.9474740, lng: 109.7935860, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -334,7 +334,7 @@ const locations = [
     {
         name: "Sumber Panen", 
         lat:  -6.950521, lng: 109.781130, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -350,7 +350,7 @@ const locations = [
     {
         name: "WM Mbak Patun", 
         lat:  -6.950212, lng: 109.781195, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -366,7 +366,7 @@ const locations = [
     {
         name: "Toko Tulis Sari", 
         lat:  -6.948747, lng: 109.778337, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -382,7 +382,7 @@ const locations = [
     {
         name: "Toko Udin", 
         lat:  -6.947616, lng: 109.780058, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -398,7 +398,7 @@ const locations = [
     {
         name: "WM Minarsih", 
         lat:  -6.948798, lng: 109.781470, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -414,7 +414,7 @@ const locations = [
     {
         name: "Kedai Pinka", 
         lat:  -6.9504482, lng: 109.7843482, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -430,7 +430,7 @@ const locations = [
     {
         name: "WM Wastuti", 
         lat:  -6.9489781, lng: 109.7837812, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -446,7 +446,7 @@ const locations = [
     {
         name: "Toko Abdul", 
         lat:  -6.9490231, lng: 109.7837916, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -462,7 +462,487 @@ const locations = [
     {
         name: "Toko Daryuni", 
         lat:  -6.949844, lng: 109.780835, 
-        type: "UMKM",
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Pak Marjo", 
+        lat:  -6.949645, lng: 109.797285, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Toko Sinta", 
+        lat:  -6.9486583, lng: 109.7934955, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Restu", 
+        lat:  -6.948756, lng: 109.795932, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Ibu Kolifah", 
+        lat:  -6.949612, lng: 109.797543, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Coffee Giras", 
+        lat:  -6.9491625, lng: 109.7787236, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Toko Kasturi", 
+        lat:  -6.946177, lng: 109.792676, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Gerai Kuning", 
+        lat:  -6.9497380, lng: 109.7803983, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Bu Eti", 
+        lat:  -6.947597, lng: 109.790443, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Pecel Bu Yani", 
+        lat:  -6.946657, lng: 109.792638, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Mie Ayam Sri Rahayu", 
+        lat:  -6.949985, lng: 109.797367, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Jajanan Mbak Desi", 
+        lat:  -6.9497366, lng: 109.7796443, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Warung Ibu Tamika", 
+        lat:  -6.9500395, lng: 109.7958928, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Toko Warung Kelontong", 
+        lat:  -6.946635, lng: 109.792616, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Sahabat Bintang", 
+        lat:  -6.9492015, lng: 109.7813190, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Toko Umi", 
+        lat:  -6.949432, lng: 109.795726, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Warung Ika Sulistyaningsih", 
+        lat:  -6.947829, lng: 109.791979, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Warung Resti", 
+        lat:  -6.9468441, lng: 109.7845034, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Warung Takoyaki", 
+        lat:  -6.9464141, lng: 109.7818712, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Warung Darsinah", 
+        lat:  -6.9461096, lng: 109.7803390, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+  {
+        name: "Warung Bu Siti", 
+        lat:  -6.9474685, lng: 109.7817545, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Es Teh Dylan", 
+        lat:  -6.946554, lng: 109.783619, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Toko Anis", 
+        lat:  -6.945870, lng: 109.778859, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+        name: "Warung Migunani", 
+        lat:  -6.9505993, lng: 109.7930771, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Warung Rohenda", 
+        lat:  -6.9487262, lng: 109.7867974, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Toko Aisah", 
+        lat:  -6.946655, lng: 109.784013, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Warung Ibu Sumirah", 
+        lat:  -6.948311, lng: 109.785467, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Harum Wangi Laundry", 
+        lat:  -6.949016, lng: 109.790953, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Warung Sarkumi", 
+        lat:  -6.9483611, lng: 109.7864591, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Warung Homsatun", 
+        lat:  -6.9486889, lng: 109.7941302, 
+        type: "Pelaku Usaha",
+      
+        // Bahasa Indonesia
+        desc: "-",
+        jamOperasional: "-",
+        
+        // Bahasa Inggris 
+        desc_en: "-",
+        jamOperasional_en: "",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+   {
+         name: "Mie Ayam Rauna", 
+        lat:  -6.949305, lng: 109.784647, 
+        type: "Pelaku Usaha",
       
         // Bahasa Indonesia
         desc: "-",
@@ -529,6 +1009,38 @@ const locations = [
     {
         name: "Masjid Tulis", 
         lat: -6.949011, lng: 109.787278, 
+        type: "Fasilitas Ibadah",
+        
+        // Bahasa Indonesia
+        desc: "Pusat kegiatan ibadah warga sekitar.",
+        jamOperasional: "24 Jam",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The central place of worship for the surrounding community.",
+        jamOperasional_en: "24 Hours",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Masjid At-Taqwa", 
+        lat: -6.948900, lng: 109.793913, 
+        type: "Fasilitas Ibadah",
+        
+        // Bahasa Indonesia
+        desc: "Pusat kegiatan ibadah warga sekitar.",
+        jamOperasional: "24 Jam",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "The central place of worship for the surrounding community.",
+        jamOperasional_en: "24 Hours",
+        
+        whatsapp: "",
+        imgSatu: "random.jpg", imgDua: "random.jpg", imgTiga: "random.jpg"
+    },
+    {
+        name: "Mushola dan TPQ Hidayah", 
+        lat: -6.948801, lng: 109.778228, 
         type: "Fasilitas Ibadah",
         
         // Bahasa Indonesia

@@ -30,7 +30,7 @@ const terjemahan = {
         katFasilitasIbadah: "Fasilitas Ibadah",
         katFasilitasKesehatan: "Fasilitas Kesehatan",
         katFasilitasPendidikan: "Fasilitas Pendidikan",
-        katUMKM: "UMKM",
+        katPelakuUsaha: "Pelaku Usaha",
         katKeamananLingkungan: "Keamanan Lingkungan"
     },
     en: {
@@ -59,7 +59,7 @@ const terjemahan = {
         katFasilitasIbadah: "Place of Worship",
         katFasilitasKesehatan: "Health Facility",
         katFasilitasPendidikan: "Education Facility",
-        katUMKM: "Local Business",
+        katPelakuUsaha: "Businessman",
         katKeamananLingkungan: "Neighborhood Security"
     }
 };
@@ -175,7 +175,7 @@ const layerGroups = {
     "Fasilitas Ibadah": L.markerClusterGroup().addTo(map),
     "Fasilitas Kesehatan": L.markerClusterGroup().addTo(map),
     "Fasilitas Pendidikan": L.markerClusterGroup().addTo(map),
-    "UMKM": L.markerClusterGroup().addTo(map),
+    "Pelaku Usaha": L.markerClusterGroup().addTo(map),
     "Keamanan Lingkungan": L.markerClusterGroup().addTo(map),
     "Jalan Desa": L.layerGroup().addTo(map),
     "Jalan Pantura": L.layerGroup().addTo(map)
@@ -221,7 +221,7 @@ function getMarkerColor(kategori) {
     switch(kategori) {
         case "Pusat Pemerintahan": return "#585858"; case "Fasilitas Ibadah": return "#cccc34";  
         case "Fasilitas Kesehatan": return "#e74c3c"; case "Fasilitas Pendidikan": return "#2ecc71"; 
-        case "UMKM": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
+        case "Pelaku Usaha": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
     }
 }
 
@@ -235,7 +235,7 @@ function getCustomIcon(kategori) {
         case "Fasilitas Ibadah": emoji = "🕌"; break; 
         case "Fasilitas Kesehatan": emoji = "🏥"; break;
         case "Fasilitas Pendidikan": emoji = "🎓"; break;
-        case "UMKM": emoji = "🏪"; break; 
+        case "Pelaku Usaha": emoji = "🏪"; break; 
         case "Keamanan Lingkungan": emoji = "🛡️"; break; 
     }
 
@@ -541,7 +541,7 @@ window.renderLegendaHTML = function() {
         { cat: "Fasilitas Ibadah", emoji: "🕌" },
         { cat: "Fasilitas Kesehatan", emoji: "🏥" },
         { cat: "Fasilitas Pendidikan", emoji: "🎓" },
-        { cat: "UMKM", emoji: "🏪" },
+        { cat: "Pelaku Usaha", emoji: "🏪" },
         { cat: "Keamanan Lingkungan", emoji: "🛡️" }
     ];
     
