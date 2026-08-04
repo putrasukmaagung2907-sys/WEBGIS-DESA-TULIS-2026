@@ -60,20 +60,52 @@ const locations = [
         imgSatu: "PSYA.jpg", imgDua: "PSYB.jpg", imgTiga: "PSYC.jpg"
     },
     {
-        name: "Poliklinik", 
-        lat: -6.948846, lng: 109.794249, 
+        name: "Poliklinik 'Sejahtera'", 
+        lat: -6.948900, lng: 109.794243, 
         type: "Fasilitas Kesehatan",
         
         // Bahasa Indonesia
-        desc: "Pelayanan kesehatan tingkat pertama bagi warga.",
-        jamOperasional: "5 Jam",
+        desc: "Pelayanan kesehatan warga Desa Tulis.",
+        jamOperasional: "Senin & Jumat (08.00 - 11.00 WIB)",
         
         // Bahasa Inggris (Tambahan Baru)
         desc_en: "Primary healthcare facility for the local community.",
         jamOperasional_en: "5 Hours",
         
-        whatsapp: "6287810107158", 
-        imgSatu: "PSYA.jpg", imgDua: "PSYB.jpg", imgTiga: "PSYC.jpg"
+        whatsapp: "", 
+        imgSatu: "KLINIK_D.jpg", imgDua: "KLINIK_A.jpg", imgTiga: "PSYC.jpg"
+    },
+    {
+        name: "Puskemas Tulis", 
+        lat: -6.949048, lng: 109.808075, 
+        type: "Fasilitas Kesehatan",
+        
+        // Bahasa Indonesia
+        desc: "Pelayanan kesehatan warga Desa Tulis.",
+        jamOperasional: "Jam pendaftaran: Senin - Kamis: 07.00 - 12.00 WIB, Jumat: 07.00 - 10.00 WIB, Sabtu: 07.00 - 11.00 WIB. Jam pelayanan: Senin - Kamis: 07.00 - 14.00 WIB, Jumat: 07.00 - 11.00 WIB, Sabtu: 07.00 - 12.30 WIB. Ruang bersalin: Melayani persalinan dan kegawatdaruratan maternal selama 24 jam. Hari libur: Minggu Tanggal merah mengikuti hari libur/cuti nasional yang ditetapkan pemerintah",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "Primary healthcare facility for the local community.",
+        jamOperasional_en: "5 Hours",
+        
+        whatsapp: "082322173998", 
+        imgSatu: "KLINIK_D.jpg", imgDua: "KLINIK_A.jpg", imgTiga: "PSYC.jpg"
+    },
+    {
+        name: "Posyandu Mawar Tulis Barat", 
+        lat: -6.947398, lng: 109.780387, 
+        type: "Fasilitas Kesehatan",
+        
+        // Bahasa Indonesia
+        desc: "Pelayanan kesehatan warga Desa Tulis.",
+        jamOperasional: "Setiap Selasa minggu ke-1 (08.00-10.30)",
+        
+        // Bahasa Inggris (Tambahan Baru)
+        desc_en: "Primary healthcare facility for the local community.",
+        jamOperasional_en: "5 Hours",
+        
+        whatsapp: "089667058249 (Bu Novi)", 
+        imgSatu: "KLINIK_D.jpg", imgDua: "KLINIK_A.jpg", imgTiga: "PSYC.jpg"
     },
 
 //FASILITAS PENDIDIKAN

@@ -19,7 +19,7 @@ const terjemahan = {
         txtInfo: "Info",
         txtKembali: "Kembali",
         txtNavigasi: "Navigasi ke Sini",
-        txtChatWA: "💬 Chat Pemilik/Admin",
+        txtChatWA: "💬 Chat Admin",
         txtRuteHitung: "Menghitung rute...",
         txtRuteJarak: "Jarak Tempuh: ",
         labelLokasiAnda: "Lokasi Anda",
@@ -48,7 +48,7 @@ const terjemahan = {
         txtInfo: "Info",
         txtKembali: "Back",
         txtNavigasi: "Navigate Here",
-        txtChatWA: "💬 Chat Owner/Admin",
+        txtChatWA: "💬 Chat Admin",
         txtRuteHitung: "Calculating route...",
         txtRuteJarak: "Distance: ",
         labelLokasiAnda: "Your Location",
@@ -59,7 +59,7 @@ const terjemahan = {
         katFasilitasIbadah: "Place of Worship",
         katFasilitasKesehatan: "Health Facility",
         katFasilitasPendidikan: "Education Facility",
-        katPelakuUsaha: "Businessman",
+        katPelakuUsaha: "Local Business", 
         katKeamananLingkungan: "Neighborhood Security"
     }
 };
@@ -69,9 +69,22 @@ const terjemahan = {
 // ==========================================
 const map = L.map('map', { 
     preferCanvas: true, 
-    doubleClickZoom: false 
+    doubleClickZoom: false,
+    
+    // --- TAMBAHAN BARU: ZOOM LEBIH HALUS & DETAIL ---
+    zoomSnap: 0.1,        // Memungkinkan peta berhenti di pecahan zoom (misal 15.1, 15.2), defaultnya 1
+    zoomDelta: 0.5,       // Tiap klik tombol +/- atau zoom, akan bergeser setengah level saja
+    wheelPxPerZoomLevel: 100 // Mengatur sensitivitas scroll mouse agar lebih lembut
 }).setView([-6.945, 109.785], 15); 
+
 map.attributionControl.setPrefix('Dibuat oleh Tim KKN Undip Desa Tulis 2026 | <a href="https://leafletjs.com">Leaflet</a>');
+
+// --- TAMBAHAN BARU: MEMUNCULKAN PENGGARIS SKALA (METER/KM) ---
+L.control.scale({
+    metric: true,     // Tampilkan penggaris dalam satuan Meter / Kilometer
+    imperial: false,  // Matikan satuan Mil / Kaki (karena tidak umum di Indonesia)
+    position: 'bottomright' // Posisikan di kiri bawah layar
+}).addTo(map);
 
 const googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
     maxZoom: 20, attribution: 'Google Satellite', keepBuffer: 4, updateWhenZooming: false
@@ -144,7 +157,6 @@ map.createPane('paneBatasDesa'); map.getPane('paneBatasDesa').style.zIndex = 353
 map.createPane('paneBatasDusun'); map.getPane('paneBatasDusun').style.zIndex = 250; 
 map.getPane('paneMasking').style.pointerEvents = 'none';
 map.getPane('paneBatasDesa').style.pointerEvents = 'none';
-map.createPane('paneMasking'); map.getPane('paneMasking').style.zIndex = 350;
 
 const desaCoords = batasDesaData.features[0].geometry.coordinates[0][0].map(coord => [coord[1], coord[0]]);
 L.polygon([ [[-90, -180], [90, -180], [90, 180], [-90, 180]], desaCoords ], {
@@ -162,21 +174,104 @@ L.geoJSON(batasDesaData, {
     style: function(feature) { return { color: "#3cc932", weight: 3, fillOpacity: 0, dashArray: "5, 5" }; }
 }).addTo(map);
 
+// Pindahkan fungsi getMarkerColor ke atas (sebelum layerGroups) agar bisa dibaca oleh cluster
+function getMarkerColor(kategori) {
+    switch(kategori) {
+        case "Pusat Pemerintahan": return "#585858"; case "Fasilitas Ibadah": return "#cccc34";  
+        case "Fasilitas Kesehatan": return "#e74c3c"; case "Fasilitas Pendidikan": return "#2ecc71"; 
+        case "Pelaku Usaha": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
+    }
+}
+
+// FUNGSI BARU: Cluster Pin Point Glassmorphism (Metode Native/Asli Plugin)
+function buatClusterKategori(kategori) {
+    
+    const ukuranPin = 32; 
+    const ukuranJangkarX = ukuranPin / 2;     
+    const ukuranJangkarY = ukuranPin;         
+    const ukuranFont = ukuranPin * 0.45;      
+
+    const grupCluster = L.markerClusterGroup({
+        maxClusterRadius: 100, 
+        disableClusteringAtZoom: 21,
+        
+        // ==========================================
+        // PERUBAHAN KUNCI UNTUK MENCEGAH BUG HILANG
+        // ==========================================
+        // 1. Biarkan plugin yang mengurus zoom klik secara natural
+        zoomToBoundsOnClick: true, 
+        
+        // 2. Memuat titik secara bertahap (mencegah browser kewalahan saat zoom out/in)
+        chunkedLoading: true,
+        
+        // 3. Jika ada titik yang kordinatnya sama persis di zoom 18, paksa mekar seperti laba-laba agar tidak hilang
+        spiderfyOnMaxZoom: true,
+        
+        iconCreateFunction: function(cluster) {
+            const jumlahTitik = cluster.getChildCount();
+            const warnaKategori = getMarkerColor(kategori);
+            
+            return L.divIcon({
+                html: `<div style="
+                            background-color: color-mix(in srgb, ${warnaKategori} 30%, rgba(255, 255, 255, 0.4)); 
+                            backdrop-filter: blur(3px);
+                            -webkit-backdrop-filter: blur(3px);
+                            width: ${ukuranPin}px; height: ${ukuranPin}px; 
+                            border-radius: 50% 50% 50% 0; 
+                            transform: rotate(-45deg); 
+                            display: flex; justify-content: center; align-items: center; 
+                            box-shadow: -2px 2px 6px rgba(0,0,0,0.3);
+                            border: 2px solid ${warnaKategori};
+                        ">
+                            <span style="
+                                transform: rotate(45deg); 
+                                color: ${warnaKategori}; 
+                                font-weight: 900; 
+                                font-family: 'Segoe UI', sans-serif; 
+                                font-size: ${ukuranFont}px;
+                                text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+                            ">
+                                ${jumlahTitik}
+                            </span>
+                       </div>`,
+                className: 'custom-cluster-pin-kaca', 
+                iconSize: [ukuranPin, ukuranPin],
+                iconAnchor: [ukuranJangkarX, ukuranJangkarY] 
+            });
+        },
+        
+        polygonOptions: {
+            fillColor: getMarkerColor(kategori),
+            color: getMarkerColor(kategori),
+            weight: 1.5,
+            opacity: 0.5,
+            fillOpacity: 0.1
+        }
+    });
+
+    // ⚠️ PENTING: Hapus SEMUA blok kode grupCluster.on('clusterclick', ...) yang sebelumnya ada di sini.
+    // Kita tidak membutuhkannya lagi karena zoomToBoundsOnClick: true sudah mengambil alih.
+
+    return grupCluster;
+}
+
 // ==========================================
 // 4. GROUPING, FILTERING & MARKER CLUSTER
 // ==========================================
 const layerGroups = {
-    // Tambahan Layer Dusun
     "Tulis Sari": L.layerGroup().addTo(map),
     "Gondangan": L.layerGroup().addTo(map),
     "Pesawahan": L.layerGroup().addTo(map),
     "Tulis Barat": L.layerGroup().addTo(map),
-    "Pusat Pemerintahan": L.markerClusterGroup().addTo(map),
-    "Fasilitas Ibadah": L.markerClusterGroup().addTo(map),
-    "Fasilitas Kesehatan": L.markerClusterGroup().addTo(map),
-    "Fasilitas Pendidikan": L.markerClusterGroup().addTo(map),
-    "Pelaku Usaha": L.markerClusterGroup().addTo(map),
-    "Keamanan Lingkungan": L.markerClusterGroup().addTo(map),
+    
+    // UBAH DI SINI: Gunakan fungsi custom yang baru dibuat, bukan L.markerClusterGroup() kosong
+    "Pusat Pemerintahan": buatClusterKategori("Pusat Pemerintahan").addTo(map),
+    "Fasilitas Ibadah": buatClusterKategori("Fasilitas Ibadah").addTo(map),
+    "Fasilitas Kesehatan": buatClusterKategori("Fasilitas Kesehatan").addTo(map),
+    "Fasilitas Pendidikan": buatClusterKategori("Fasilitas Pendidikan").addTo(map),
+    "Pelaku Usaha": buatClusterKategori("Pelaku Usaha").addTo(map),
+    "Keamanan Lingkungan": buatClusterKategori("Keamanan Lingkungan").addTo(map),
+    
     "Jalan Desa": L.layerGroup().addTo(map),
     "Jalan Pantura": L.layerGroup().addTo(map)
 };
@@ -216,14 +311,6 @@ L.geoJSON(pesawahanData, { coordsToLatLng: konversiKoordinat, style: styleDusun(
 L.geoJSON(tulisBaratData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#32a852") })
   .bindTooltip("Dusun Tulis Barat", { sticky: true, className: 'label-tempat' })
   .addTo(layerGroups["Tulis Barat"]);
-
-function getMarkerColor(kategori) {
-    switch(kategori) {
-        case "Pusat Pemerintahan": return "#585858"; case "Fasilitas Ibadah": return "#cccc34";  
-        case "Fasilitas Kesehatan": return "#e74c3c"; case "Fasilitas Pendidikan": return "#2ecc71"; 
-        case "Pelaku Usaha": return "#631861"; case "Keamanan Lingkungan": return "#34495e"; default: return "#3498db"; 
-    }
-}
 
 // FUNGSI PEMBUAT SIMBOL IKON (EMOJI) BENTUK PIN
 function getCustomIcon(kategori) {
@@ -310,14 +397,22 @@ function getPopupHTML(index) {
 locations.forEach((loc, index) => {
     const classKategori = 'label-' + loc.type.toLowerCase().replace(/\s+/g, '-');
     
+    // Tentukan arah posisi teks berdasarkan kategori atau letak agar tidak menumpuk
+    // Contoh: kita atur agar tooltip muncul di bagian atas pin dengan sedikit offset
     const marker = L.marker([loc.lat, loc.lng], {
         icon: getCustomIcon(loc.type)
     })
-    .bindTooltip(loc.name, { permanent: true, direction: 'right', offset: [0, 0], className: 'label-tempat ' + classKategori })
+    .bindTooltip(loc.name, { 
+        permanent: true, 
+        direction: 'top',             // Ubah dari 'right' ke 'top' agar berada di atas pin
+        offset: [0, -20],             // Beri jarak vertikal agar tidak menutupi kepala pin
+        className: 'label-tempat ' + classKategori 
+    })
     .bindPopup(getPopupHTML(index)); 
 
     if(layerGroups[loc.type]) { marker.addTo(layerGroups[loc.type]); } 
     searchData.push({ name: loc.name.toLowerCase(), marker: marker, lat: loc.lat, lng: loc.lng });
+    
     marker.on('popupclose', function() {
         setTimeout(() => { marker.setPopupContent(getPopupHTML(index)); }, 300);
     });
@@ -416,13 +511,6 @@ searchInput.addEventListener('input', function() {
     } else {
         // Sembunyikan kalau diketik sembarangan dan tidak ada di JSON
         searchSuggestions.classList.add('hidden'); 
-    }
-});
-
-// 3. Sembunyikan kotak rekomendasi jika warga asal klik di tempat lain (di peta)
-document.addEventListener('click', function(e) {
-    if (!document.getElementById('search-container').contains(e.target)) {
-        searchSuggestions.classList.add('hidden');
     }
 });
 

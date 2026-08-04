@@ -87,17 +87,19 @@ body, html {
    Styling Label Tempat & Fitur Hide Google Maps
    ========================================== */
 .label-tempat {
-    background-color: transparent !important;
+    background-color: rgba(0, 0, 0, 0.4) !important; /* Tambahkan background transparan tipis */
+    backdrop-filter: blur(2px);                       /* Efek buram tipis agar mudah dibaca */
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
     border: none !important;
-    box-shadow: none !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
     color: #ffffff;
-    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000;
-    font-size: 8px;
-    font-weight: 600;
-    /* Efek transisi agar teks muncul/hilang dengan halus saat zoom */
+    font-size: 9px;
+    font-weight: 700;
     transition: opacity 0.3s ease, visibility 0.3s ease; 
 }
-/* Menghilangkan panah (segitiga) bawaan leaflet pada tooltip */
+
+/* Hilangkan segitiga tooltip */
 .leaflet-tooltip-top::before,
 .leaflet-tooltip-bottom::before,
 .leaflet-tooltip-left::before,
