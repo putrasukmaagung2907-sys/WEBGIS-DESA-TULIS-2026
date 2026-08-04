@@ -186,14 +186,14 @@ function getMarkerColor(kategori) {
 // FUNGSI BARU: Cluster Pin Point Glassmorphism (Metode Native/Asli Plugin)
 function buatClusterKategori(kategori) {
     
-    const ukuranPin = 32; 
+    const ukuranPin = 25; 
     const ukuranJangkarX = ukuranPin / 2;     
     const ukuranJangkarY = ukuranPin;         
     const ukuranFont = ukuranPin * 0.45;      
 
     const grupCluster = L.markerClusterGroup({
-        maxClusterRadius: 100, 
-        disableClusteringAtZoom: 21,
+        maxClusterRadius: 50, 
+        disableClusteringAtZoom: 20,
         
         // ==========================================
         // PERUBAHAN KUNCI UNTUK MENCEGAH BUG HILANG
