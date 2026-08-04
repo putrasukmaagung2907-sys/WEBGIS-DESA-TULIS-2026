@@ -77,14 +77,14 @@ const map = L.map('map', {
     wheelPxPerZoomLevel: 100 // Mengatur sensitivitas scroll mouse agar lebih lembut
 }).setView([-6.945, 109.785], 15); 
 
-map.attributionControl.setPrefix('Dibuat oleh Tim KKN Undip Desa Tulis 2026 | <a href="https://leafletjs.com">Leaflet</a>');
+map.attributionControl.setPrefix('Dibuat sepenuh hati oleh KKN Undip Desa Tulis 2026 ❤️| <a href="https://leafletjs.com">Leaflet</a>');
 
 // --- TAMBAHAN BARU: MEMUNCULKAN PENGGARIS SKALA (METER/KM) ---
-L.control.scale({
-    metric: true,     // Tampilkan penggaris dalam satuan Meter / Kilometer
-    imperial: false,  // Matikan satuan Mil / Kaki (karena tidak umum di Indonesia)
-    position: 'bottomright' // Posisikan di kiri bawah layar
-}).addTo(map);
+//L.control.scale({
+  //  metric: true,     // Tampilkan penggaris dalam satuan Meter / Kilometer
+    //imperial: false,  // Matikan satuan Mil / Kaki (karena tidak umum di Indonesia)
+    //position: 'bottomright' // Posisikan di kiri bawah layar
+//}).addTo(map);
 
 const googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
     maxZoom: 20, attribution: 'Google Satellite', keepBuffer: 4, updateWhenZooming: false
