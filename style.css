@@ -541,11 +541,11 @@ body, html {
     /* 3. MENGANGKAT LEGENDA */
     /* Karena watermark sekarang di kanan bawah, kita harus angkat tombol Legenda sedikit agar tidak bertumpukan */
     .leaflet-bottom.leaflet-right {
-        bottom: 85px !important; 
+        bottom: 45px !important; 
     }
 
     /* 4. Animasi Slide Legenda Khusus Mobile */
-    .leaflet-bottom .leaflet-control.legend-container { margin-bottom: 75px; }
+    .leaflet-bottom .leaflet-control.legend-container { margin-bottom: 85px; }
     #legend-toggle-btn, .close-legend-btn { display: block; }
     .legend-content {
         position: absolute; bottom: 0; right: 0; width: max-content; min-width: 170px;
