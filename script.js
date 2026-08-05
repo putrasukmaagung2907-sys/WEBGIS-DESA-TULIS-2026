@@ -385,12 +385,17 @@ locations.forEach((loc, index) => {
         const zoomLevel = map.getZoom();
         const markerLatLng = e.target.getLatLng();
         
+        // 1. Ubah kordinat bumi (Lat/Lng) menjadi kordinat layar (Pixel)
         let pointPixel = map.project(markerLatLng, zoomLevel);
+        
+        // 2. Geser titik pusat layar ke atas sejauh 180 pixel 
         pointPixel.y -= 180; 
         
+        // 3. Ubah kembali kordinat layar (Pixel) menjadi kordinat bumi
         const targetLatLng = map.unproject(pointPixel, zoomLevel);
         
-        map.flyTo(targetLatLng, zoomLevel, {
+        // 4. PERBAIKAN: Gunakan panTo (bukan flyTo) agar geseran layar pendek sangat mulus
+        map.panTo(targetLatLng, {
             animate: true,
             duration: 0.5
         });
