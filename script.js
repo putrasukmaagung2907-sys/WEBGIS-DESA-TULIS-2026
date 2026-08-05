@@ -927,4 +927,41 @@ window.toggleBahasa = function() {
     }
     
     document.getElementById('btn-bahasa').innerText = bahasaSaatIni === 'id' ? "🌐 Ganti Bahasa" : "🌐 Change Language";
+    // (Posisikan di dalam fungsi toggleBahasa, bagian paling bawah)
+    const btnLabel = document.getElementById('btn-toggle-label');
+    if (btnLabel) {
+        if (isLabelTampil) {
+            btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Sembunyi Label' : '🏷️ Hide Labels';
+        } else {
+            btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Tampil Label' : '🏷️ Show Labels';
+        }
+    }
+};
+
+// ==========================================
+// FITUR TOGGLE LABEL NAMA TEMPAT
+// ==========================================
+let isLabelTampil = false; // Status awal: disembunyikan
+
+// 1. Eksekusi langsung: Matikan label saat web pertama kali dimuat
+document.getElementById('map').classList.add('hide-labels');
+
+// 2. Fungsi ketika tombol diklik
+window.toggleLabel = function() {
+    const mapEl = document.getElementById('map');
+    const btnLabel = document.getElementById('btn-toggle-label');
+    
+    isLabelTampil = !isLabelTampil; // Ubah status
+    
+    if (isLabelTampil) {
+        // AKSI: MUNCULKAN LABEL
+        mapEl.classList.remove('hide-labels');
+        btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Sembunyi Label' : '🏷️ Hide Labels';
+        btnLabel.style.background = '#e74c3c'; // Ubah tombol jadi Merah
+    } else {
+        // AKSI: SEMBUNYIKAN LABEL
+        mapEl.classList.add('hide-labels');
+        btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Tampil Label' : '🏷️ Show Labels';
+        btnLabel.style.background = '#8e44ad'; // Ubah tombol kembali jadi Ungu
+    }
 };

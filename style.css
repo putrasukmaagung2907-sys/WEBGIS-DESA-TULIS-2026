@@ -139,7 +139,7 @@ body, html {
    ========================================== */
 #search-container { 
     position: absolute; 
-    top: 15px; 
+    top: 75px; 
     left: 60px; 
     z-index: 1000; 
     display: flex; 
@@ -216,7 +216,7 @@ body, html {
    ========================================== */
 #filter-container {
     position: absolute;
-    top: 15px;
+    top: 75px;
     right: 15px;
     z-index: 1000;
     display: flex;
@@ -640,7 +640,7 @@ body, html {
 
 /* Menggeser wadah tombol Lapor agar tidak tertumpuk Filter Kategori */
 .leaflet-top.leaflet-right {
-    margin-top: 55px; 
+    margin-top: 165px; 
     margin-right: 5px;
 }
 
@@ -925,8 +925,9 @@ body, html {
 /* 1. Menyeragamkan Lebar, Tinggi, Sudut, Teks, dan Spasi */
 #filter-toggle-btn,
 .lapor-warga-control,
-#btn-bahasa {
-    width: 140px !important;
+#btn-bahasa,
+#btn-toggle-label {
+    width: 120px !important;
     height: 40px !important;
     display: flex !important;
     justify-content: center !important;
@@ -942,12 +943,12 @@ body, html {
     margin: 0 !important; 
 }
 
-/* 2. Tingkat 1: Wadah Filter (Paling Atas & Layer Tertinggi) */
+/* 2. Tingkat 1: Wadah Filter (Paling Atas di bawah Header) */
 #filter-container {
-    position: fixed !important; /* Mengunci paksa ke sudut layar, bebas dari peta */
-    top: 15px !important;
+    position: fixed !important; 
+    top: 70px !important;
     right: 15px !important;
-    z-index: 2000 !important; /* KUNCI PERBAIKAN: Angkat lapisan jauh di atas tombol EN/ID */
+    z-index: 2000 !important; 
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-end !important;
@@ -970,24 +971,32 @@ body, html {
 /* 3. Tingkat 2: Tombol Lapor Cepat */
 .lapor-warga-control {
     position: fixed !important; 
-    top: 65px !important;       /* Perhitungan: 15px + Tinggi 40px + Spasi 10px */
-    right: 15px !important;     /* Disamakan rata kanan persis 15px */
+    top: 120px !important;       
+    right: 15px !important;     
     z-index: 1000 !important;
 }
 
 /* 4. Tingkat 3: Tombol Bahasa */
 #btn-bahasa {
     position: fixed !important;
-    top: 115px !important;      /* Perhitungan: 65px + Tinggi 40px + Spasi 10px */
-    right: 15px !important;     /* Disamakan rata kanan persis 15px */
+    top: 170px !important;      
+    right: 15px !important;     
     left: auto !important;
-    z-index: 999 !important;    /* KUNCI PERBAIKAN: Lapisan diturunkan agar selalu di bawah menu filter */
+    z-index: 999 !important;    
     
-    /* Mengembalikan warna bawaan khusus tombol bahasa */
     background: rgba(30, 40, 50, 0.85) !important;
     backdrop-filter: blur(4px) !important;
     color: white !important;
     border: 2px solid #3498db !important;
+}
+
+/* 5. Tingkat 4: Tombol Toggle Label (BARU) */
+#btn-toggle-label {
+    position: fixed !important;
+    top: 220px !important;      
+    right: 15px !important;     
+    left: auto !important;
+    z-index: 998 !important;
 }
 
 /* ==========================================
@@ -1028,4 +1037,124 @@ body, html {
     /* Putar balik emojinya searah jarum jam agar tegak (tidak ikut miring) */
     transform: rotate(45deg); 
     font-size: 10px;
+}
+
+/* ==========================================
+   FITUR TOGGLE SEMBUNYIKAN SEMUA LABEL
+   ========================================== */
+#map.hide-labels .label-tempat {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important; /* Agar teks yang tak terlihat tidak menghalangi kursor klik */
+}
+
+/* ==========================================
+   STYLING HEADER LOGO
+   ========================================== */
+#header-webgis {
+    position: absolute;
+    top: 0; left: 0; 
+    width: 100%; 
+    height: 50px; /* Tinggi header */
+    background: rgba(44, 62, 80, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 3000; /* Lapisan tertinggi agar tidak tertutup peta */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    box-sizing: border-box;
+}
+
+.header-logos {
+    display: flex;
+    gap: 5px; /* Jarak antar logo */
+    align-items: center;
+    height: 100%;
+}
+
+.logo-item {
+    height: 40px; /* Kunci ukuran logo agar seragam dan rapi */
+    width: auto;
+    object-fit: contain;
+}
+
+.header-title {
+    text-align: right;
+    color: white;
+}
+
+.header-title h1 {
+    margin: 0; 
+    font-size: 16px; 
+    font-weight: 900; 
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.header-title p {
+    margin: 0; 
+    font-size: 11px; 
+    color: #bdc3c7;
+}
+
+/* Penyesuaian Header Saat Dibuka di Layar HP */
+@media (max-width: 768px) {
+    #header-webgis { padding: 0 10px; height: 55px; }
+    .header-logos { gap: 8px; }
+    .logo-item { height: 35px; }
+    .header-title h1 { font-size: 13px; }
+    .header-title p { font-size: 9px; }
+}
+/* ==========================================
+   PERBAIKAN POSISI TOMBOL KIRI ATAS (ZOOM DLL)
+   ========================================== */
+.leaflet-top.leaflet-left {
+    margin-top: 63px !important; 
+}
+/* ==========================================
+   PENGATURAN UKURAN LOGO INDIVIDUAL
+   ========================================== */
+
+/* Ukuran khusus Logo Undip */
+#logo-kampus {
+    height: 40px !important; /* Silakan ubah angka ini sesuka hati */
+}
+
+/* Ukuran khusus Logo Kabupaten Batang */
+#logo-daerah {
+    height: 33px !important; /* Silakan ubah angka ini sesuka hati */
+}
+
+/* Penyesuaian ukuran individual saat dibuka di HP */
+@media (max-width: 768px) {
+    #logo-kampus { 
+        height: 45px !important; 
+    }
+    #logo-daerah { 
+        height: 38px !important; 
+    }
+}
+/* ==========================================
+   TUKAR POSISI TEKS (KIRI) & LOGO (KANAN)
+   ========================================== */
+
+/* 1. Atur wadah utama header agar merapat ke kiri */
+#header-webgis {
+    display: flex !important;
+    justify-content: flex-start !important; /* Menarik semua elemen ke kiri */
+    align-items: center !important; /* Menjaga teks dan logo tetap sejajar di tengah secara vertikal */
+    gap: 15px !important; /* Mengatur jarak spasi antara teks dan logo */
+}
+
+/* 2. Pindahkan wadah teks menjadi urutan pertama (di kiri) */
+#header-webgis > div:not(.header-logos) {
+    order: 1 !important; 
+    text-align: left !important; /* Mengubah rataan teks dari kanan menjadi rata kiri */
+}
+
+/* 3. Pindahkan wadah logo menjadi urutan kedua (tepat di kanan teks) */
+.header-logos {
+    order: 2 !important; 
 }

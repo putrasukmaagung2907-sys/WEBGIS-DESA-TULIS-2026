@@ -285,7 +285,7 @@ const locations = [
     },
     {
         name: "Toko Istiqomah", 
-        lat:  6.949915, lng: 109.784319, 
+        lat:  -6.949915, lng: 109.784319, 
         type: "Pelaku Usaha",
       
         // Bahasa Indonesia

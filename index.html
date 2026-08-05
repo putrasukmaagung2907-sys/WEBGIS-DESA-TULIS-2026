@@ -17,6 +17,20 @@
     <!-- Custom CSS Anda -->
     <link rel="stylesheet" href="style.css?v=15">
 </head>
+<!-- HEADER WEBGIS -->
+    <header id="header-webgis">
+    <div class="header-logos">
+    <!-- Tambahkan id="logo-kampus" -->
+    <img src="UNDIPOfficial.png.webp" alt="Logo Kampus" id="logo-kampus" class="logo-item" onerror="this.src='https://via.placeholder.com/50x50?text=Logo1'">
+    
+    <!-- Tambahkan id="logo-daerah" -->
+    <img src="Lambang_Kabupaten_Batang.png" alt="Logo Desa" id="logo-daerah" class="logo-item" onerror="this.src='https://via.placeholder.com/50x50?text=Logo2'">
+    </div>
+        <div class="header-title">
+            <h1>WebGIS Desa Tulis</h1>
+            <p>Pemetaan Potensi & Fasilitas Desa</p>
+        </div>
+    </header>
 <body>
     <!-- (Bagian HTML lainnya tetap sama persis seperti sebelumnya) -->
     <div id="search-container">
@@ -63,6 +77,10 @@
     <!-- Letakkan di dalam tag <body> -->
 <button id="btn-bahasa" onclick="toggleBahasa()" style="position: absolute; top: 115px; right: 15px; z-index: 1000; padding: 8px 12px; background: #34495e; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
     🌐 Ganti Bahasa
+</button>
+<!-- Tombol Toggle Label -->
+<button id="btn-toggle-label" onclick="toggleLabel()" style="position: absolute; top: 165px; right: 15px; z-index: 1000; padding: 8px 12px; background: #8e44ad; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; width: 140px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; gap: 8px;">
+    🏷️ Tampil Label
 </button>
     <div id="route-info">Jarak Tempuh: <span id="distance-text">0 meter</span></div>
 
