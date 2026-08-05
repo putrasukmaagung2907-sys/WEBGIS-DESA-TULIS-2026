@@ -70,21 +70,12 @@ const terjemahan = {
 const map = L.map('map', { 
     preferCanvas: true, 
     doubleClickZoom: false,
-    
-    // --- TAMBAHAN BARU: ZOOM LEBIH HALUS & DETAIL ---
-    zoomSnap: 0.1,        // Memungkinkan peta berhenti di pecahan zoom (misal 15.1, 15.2), defaultnya 1
-    zoomDelta: 0.5,       // Tiap klik tombol +/- atau zoom, akan bergeser setengah level saja
-    wheelPxPerZoomLevel: 100 // Mengatur sensitivitas scroll mouse agar lebih lembut
+    zoomSnap: 0.1,        
+    zoomDelta: 0.5,       
+    wheelPxPerZoomLevel: 100 
 }).setView([-6.945, 109.785], 15); 
 
 map.attributionControl.setPrefix('Dibuat sepenuh hati oleh KKN Undip Desa Tulis 2026 ❤️| <a href="https://leafletjs.com">Leaflet</a>');
-
-// --- TAMBAHAN BARU: MEMUNCULKAN PENGGARIS SKALA (METER/KM) ---
-//L.control.scale({
-  //  metric: true,     // Tampilkan penggaris dalam satuan Meter / Kilometer
-    //imperial: false,  // Matikan satuan Mil / Kaki (karena tidak umum di Indonesia)
-    //position: 'bottomright' // Posisikan di kiri bawah layar
-//}).addTo(map);
 
 const googleSat = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
     maxZoom: 20, attribution: 'Google Satellite', keepBuffer: 4, updateWhenZooming: false
@@ -174,7 +165,6 @@ L.geoJSON(batasDesaData, {
     style: function(feature) { return { color: "#3cc932", weight: 3, fillOpacity: 0, dashArray: "5, 5" }; }
 }).addTo(map);
 
-// Pindahkan fungsi getMarkerColor ke atas (sebelum layerGroups) agar bisa dibaca oleh cluster
 function getMarkerColor(kategori) {
     switch(kategori) {
         case "Pusat Pemerintahan": return "#585858"; case "Fasilitas Ibadah": return "#cccc34";  
@@ -183,9 +173,7 @@ function getMarkerColor(kategori) {
     }
 }
 
-// FUNGSI BARU: Cluster Pin Point Glassmorphism (Metode Native/Asli Plugin)
 function buatClusterKategori(kategori) {
-    
     const ukuranPin = 25; 
     const ukuranJangkarX = ukuranPin / 2;     
     const ukuranJangkarY = ukuranPin;         
@@ -194,17 +182,8 @@ function buatClusterKategori(kategori) {
     const grupCluster = L.markerClusterGroup({
         maxClusterRadius: 50, 
         disableClusteringAtZoom: 20,
-        
-        // ==========================================
-        // PERUBAHAN KUNCI UNTUK MENCEGAH BUG HILANG
-        // ==========================================
-        // 1. Biarkan plugin yang mengurus zoom klik secara natural
         zoomToBoundsOnClick: true, 
-        
-        // 2. Memuat titik secara bertahap (mencegah browser kewalahan saat zoom out/in)
         chunkedLoading: true,
-        
-        // 3. Jika ada titik yang kordinatnya sama persis di zoom 18, paksa mekar seperti laba-laba agar tidak hilang
         spiderfyOnMaxZoom: true,
         
         iconCreateFunction: function(cluster) {
@@ -249,9 +228,6 @@ function buatClusterKategori(kategori) {
         }
     });
 
-    // ⚠️ PENTING: Hapus SEMUA blok kode grupCluster.on('clusterclick', ...) yang sebelumnya ada di sini.
-    // Kita tidak membutuhkannya lagi karena zoomToBoundsOnClick: true sudah mengambil alih.
-
     return grupCluster;
 }
 
@@ -264,7 +240,6 @@ const layerGroups = {
     "Pesawahan": L.layerGroup().addTo(map),
     "Tulis Barat": L.layerGroup().addTo(map),
     
-    // UBAH DI SINI: Gunakan fungsi custom yang baru dibuat, bukan L.markerClusterGroup() kosong
     "Pusat Pemerintahan": buatClusterKategori("Pusat Pemerintahan").addTo(map),
     "Fasilitas Ibadah": buatClusterKategori("Fasilitas Ibadah").addTo(map),
     "Fasilitas Kesehatan": buatClusterKategori("Fasilitas Kesehatan").addTo(map),
@@ -284,18 +259,16 @@ L.geoJSON(jalanPanturaData, {
     pane: 'paneJalanPantura', coordsToLatLng: konversiKoordinat, smoothFactor: 1.5, style: { color: "#2c12f3", weight: 6, opacity: 0.9 } 
 }).bindTooltip("Jl. PANTURA", { sticky: true, className: 'label-tempat' }).addTo(layerGroups["Jalan Pantura"]);
 
-// FUNGSI GAYA & RENDER BATAS DUSUN
 function styleDusun(warnaHex) {
     return {
-        pane: 'paneBatasDusun', // Memastikan layer terkunci di paling bawah
-        color: warnaHex,        // Warna garis batas
-        weight: 2,              // Ketebalan garis
-        fillColor: warnaHex,    // Warna blok area
-        fillOpacity: 0.35       // Tingkat transparansi
+        pane: 'paneBatasDusun', 
+        color: warnaHex,        
+        weight: 2,              
+        fillColor: warnaHex,    
+        fillOpacity: 0.35       
     };
 }
 
-// Render data dusun dari EPSG:32749 ke EPSG:4326 lalu masukkan ke map
 L.geoJSON(tulisSariData, { coordsToLatLng: konversiKoordinat, style: styleDusun("#b59b38") })
   .bindTooltip("Dusun Tulis Sari", { sticky: true, className: 'label-tempat' })
   .addTo(layerGroups["Tulis Sari"]);
@@ -312,7 +285,6 @@ L.geoJSON(tulisBaratData, { coordsToLatLng: konversiKoordinat, style: styleDusun
   .bindTooltip("Dusun Tulis Barat", { sticky: true, className: 'label-tempat' })
   .addTo(layerGroups["Tulis Barat"]);
 
-// FUNGSI PEMBUAT SIMBOL IKON (EMOJI) BENTUK PIN
 function getCustomIcon(kategori) {
     let emoji = "📍";
     let color = getMarkerColor(kategori);
@@ -328,44 +300,38 @@ function getCustomIcon(kategori) {
 
     return L.divIcon({
         className: 'custom-div-icon',
-        // Kirim warna ke CSS melalui var(--warna-marker) dan bungkus emoji dalam <span>
         html: `<div class="custom-marker-wrapper" style="--warna-marker: ${color};"><span class="marker-emoji">${emoji}</span></div>`,
         iconSize: [0, 0], 
-        
-        // KUNCI PRESISI: Menggeser titik tumpu (Y) agar pas mendarat di ujung lancip panah bawah
         iconAnchor: [14, 34], 
-        popupAnchor: [0, -34], // Popup akan muncul dari bagian atas balon
-        tooltipAnchor: [-2, -10] // Teks label nempel tepat di bagian perut kanan balon
+        popupAnchor: [0, -34], 
+        tooltipAnchor: [-2, -10] 
     });
 }
 
 
 let searchData = [];
 
-// 1. FUNGSI BARU: Langsung buat 1 Popup Lengkap (Gambar Thumbnail + Info)
+// 1. BUAT POPUP LENGKAP DENGAN LAZY LOADING
 function getPopupHTML(index) {
     const loc = locations[index];
     const t = terjemahan[bahasaSaatIni];
     
-    // Logika bahasa
     const deskripsi = (bahasaSaatIni === 'en' && loc.desc_en) ? loc.desc_en : loc.desc;
     const operasional = (bahasaSaatIni === 'en' && loc.jamOperasional_en) ? loc.jamOperasional_en : loc.jamOperasional;
     const katName = t["kat" + loc.type.replace(/\s+/g, '')] || loc.type;
 
-    // Logika tombol WhatsApp
     let waButtonHTML = '';
     if (loc.whatsapp) {
         let nomorWA = loc.whatsapp.startsWith('0') ? '62' + loc.whatsapp.substring(1) : loc.whatsapp;
         waButtonHTML = `<button type="button" class="wa-btn" onclick="window.open('https://wa.me/${nomorWA}', '_blank'); event.stopPropagation();" style="width:100%; margin-bottom:8px; padding:6px; border-radius:4px; text-align:center;">${t.txtChatWA}</button>`;
     }
     
-    // Logika Gambar Utama (imgSatu) langsung ditampilkan
+    // TAMBAHAN: loading="lazy" decoding="async"
     let imgThumbnailHTML = '';
     if(loc.imgSatu && loc.imgSatu !== "") {
-        imgThumbnailHTML = `<img src="${loc.imgSatu}" alt="Foto ${loc.name}" style="width:100%; height:130px; object-fit:cover; border-radius:6px; margin-bottom:10px; border:1px solid #bdc3c7;" onerror="this.style.display='none'">`;
+        imgThumbnailHTML = `<img src="${loc.imgSatu}" alt="Foto ${loc.name}" loading="lazy" decoding="async" style="width:100%; height:130px; object-fit:cover; border-radius:6px; margin-bottom:10px; border:1px solid #bdc3c7;" onerror="this.style.display='none'">`;
     }
 
-    // Mengembalikan satu kesatuan kotak HTML
     return `
         <div class="popup-content" style="position: relative; min-width: 220px; max-width: 270px; text-align: left; padding-top: 2px;">
             ${imgThumbnailHTML}
@@ -406,7 +372,6 @@ locations.forEach((loc, index) => {
         offset: [0, -20],             
         className: 'label-tempat ' + classKategori 
     })
-    // TAMBAHAN: autoPan di-set false agar animasi bawaan Leaflet tidak tabrakan dengan flyTo kita
     .bindPopup(getPopupHTML(index), { autoPan: false }); 
 
     if(layerGroups[loc.type]) { marker.addTo(layerGroups[loc.type]); } 
@@ -416,28 +381,18 @@ locations.forEach((loc, index) => {
         setTimeout(() => { marker.setPopupContent(getPopupHTML(index)); }, 300);
     });
 
-    // ==========================================
-    // REVISI: FOKUS KE TENGAH KOTAK POP-UP
-    // ==========================================
     marker.on('click', function(e) {
         const zoomLevel = map.getZoom();
         const markerLatLng = e.target.getLatLng();
         
-        // 1. Ubah kordinat bumi (Lat/Lng) menjadi kordinat layar (Pixel)
         let pointPixel = map.project(markerLatLng, zoomLevel);
-        
-        // 2. Geser titik pusat layar ke atas sejauh 180 pixel 
-        // (Angka 180 ini adalah perkiraan setengah tinggi pop-up Anda. 
-        // Jika pop-up dirasa masih kurang ke tengah, Anda bisa memperbesar angka ini misal ke 200 atau 220)
         pointPixel.y -= 180; 
         
-        // 3. Ubah kembali kordinat layar (Pixel) yang sudah digeser menjadi kordinat bumi (Lat/Lng)
         const targetLatLng = map.unproject(pointPixel, zoomLevel);
         
-        // 4. Terbangkan peta ke titik yang baru agar pop-up pas di tengah
         map.flyTo(targetLatLng, zoomLevel, {
             animate: true,
-            duration: 0.8
+            duration: 0.5
         });
     });
 });
@@ -475,70 +430,61 @@ window.buatRute = function(index, event) {
 };
 
 // ==========================================
-// FITUR PENCARIAN DENGAN REKOMENDASI 
+// FITUR PENCARIAN DENGAN DEBOUNCE (ANTI LAG)
 // ==========================================
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
 const searchSuggestions = document.getElementById('search-suggestions');
 
-// Fungsi Utama: Eksekusi Terbangkan Peta ke Lokasi
 function jalankanPencarian(query) {
-    // UBAH DI SINI: Gunakan startsWith agar pencarian tombol juga berdasarkan awalan
     let found = searchData.find(item => item.name.startsWith(query));
     
     if(found && query !== "") {
         map.flyTo([found.lat, found.lng], 18, { animate: true, duration: 1.5 });
         setTimeout(() => found.marker.openPopup(), 1500);
-        searchSuggestions.classList.add('hidden'); // Sembunyikan list setelah ketemu
+        searchSuggestions.classList.add('hidden'); 
     } else {
         alert(terjemahan[bahasaSaatIni].alertTidakKetemu);
     }
 }
 
-// 1. Saat tombol Kaca Pembesar diklik
 searchBtn.addEventListener('click', function() {
     let query = searchInput.value.toLowerCase().trim();
     jalankanPencarian(query);
 });
 
-// 2. Saat warga mengetik huruf di keyboard (Fitur Auto-Complete)
+// TAMBAHAN: Timer Debounce
+let debounceTimer;
 searchInput.addEventListener('input', function() {
+    clearTimeout(debounceTimer); 
     let query = this.value.toLowerCase().trim();
-    searchSuggestions.innerHTML = ''; // Kosongkan rekomendasi sebelumnya
     
-    // Jika input kosong, sembunyikan kotak putihnya
-    if (query === '') {
-        searchSuggestions.classList.add('hidden');
-        return;
-    }
+    debounceTimer = setTimeout(() => {
+        searchSuggestions.innerHTML = ''; 
+        if (query === '') {
+            searchSuggestions.classList.add('hidden');
+            return;
+        }
 
-    // UBAH DI SINI: Menggunakan startsWith() agar hanya mencocokkan huruf awal
-    let matches = searchData.filter(item => item.name.startsWith(query));
+        let matches = searchData.filter(item => item.name.startsWith(query));
 
-    // Jika ada yang cocok, tampilkan list ke layar
-    if (matches.length > 0) {
-        searchSuggestions.classList.remove('hidden');
-        
-        matches.forEach(match => {
-            let li = document.createElement('li');
-            li.textContent = match.name; 
-            
-            // Jika salah satu rekomendasi diklik oleh warga
-            li.addEventListener('click', function() {
-                // Masukkan nama ke dalam kotak input, lalu langsung terbangkan peta
-                searchInput.value = match.name.replace(/\b\w/g, l => l.toUpperCase());
-                jalankanPencarian(match.name);
+        if (matches.length > 0) {
+            searchSuggestions.classList.remove('hidden');
+            matches.forEach(match => {
+                let li = document.createElement('li');
+                li.textContent = match.name; 
+                li.addEventListener('click', function() {
+                    searchInput.value = match.name.replace(/\b\w/g, l => l.toUpperCase());
+                    jalankanPencarian(match.name);
+                });
+                searchSuggestions.appendChild(li);
             });
-            
-            searchSuggestions.appendChild(li);
-        });
-    } else {
-        // Sembunyikan kalau diketik sembarangan dan tidak ada di JSON
-        searchSuggestions.classList.add('hidden'); 
-    }
+        } else {
+            searchSuggestions.classList.add('hidden'); 
+        }
+    }, 200); 
 });
 
-// 3. Sembunyikan kotak rekomendasi jika warga asal klik di tempat lain (di peta)
 document.addEventListener('click', function(e) {
     if (!document.getElementById('search-container').contains(e.target)) {
         searchSuggestions.classList.add('hidden');
@@ -562,37 +508,28 @@ const allFilterBtns = document.querySelectorAll('.filter-btn');
 
 if (btnToggleAll) {
     btnToggleAll.addEventListener('click', function(e) {
-        e.stopPropagation(); // Mencegah menu panel tertutup saat diklik
-        
-        // Cek status tombol saat ini (sedang mode 'hide' atau 'show')
+        e.stopPropagation(); 
         const currentState = this.getAttribute('data-state');
 
         if (currentState === 'hide') {
-            // AKSI: Sembunyikan Semua Layer
             allFilterBtns.forEach(btn => {
                 if (btn.classList.contains('active')) {
-                    btn.classList.remove('active'); // Matikan warna tombol
+                    btn.classList.remove('active'); 
                     const category = btn.getAttribute('data-category');
-                    if (layerGroups[category]) map.removeLayer(layerGroups[category]); // Hapus layer dari peta
+                    if (layerGroups[category]) map.removeLayer(layerGroups[category]); 
                 }
             });
-            
-            // Ubah wujud tombol menjadi "Tampilkan Semua" (Hijau)
             this.setAttribute('data-state', 'show');
             this.className = 'filter-action-btn btn-semua';
             this.innerHTML = 'Tampilkan Semua';
-            
         } else {
-            // AKSI: Tampilkan Semua Layer
             allFilterBtns.forEach(btn => {
                 if (!btn.classList.contains('active')) {
-                    btn.classList.add('active'); // Nyalakan warna tombol
+                    btn.classList.add('active'); 
                     const category = btn.getAttribute('data-category');
-                    if (layerGroups[category]) map.addLayer(layerGroups[category]); // Munculkan layer ke peta
+                    if (layerGroups[category]) map.addLayer(layerGroups[category]); 
                 }
             });
-            
-            // Ubah wujud tombol kembali menjadi "Sembunyikan Semua" (Merah)
             this.setAttribute('data-state', 'hide');
             this.className = 'filter-action-btn btn-kosong';
             this.innerHTML = 'Sembunyikan Semua';
@@ -605,7 +542,7 @@ const filterPanel = document.getElementById('filter-panel');
 if (filterToggleBtn && filterPanel) { filterToggleBtn.addEventListener('click', (e) => { e.stopPropagation(); filterPanel.classList.toggle('show'); }); }
 
 // ==========================================
-// 5. STATUS BAR ALA GOOGLE EARTH
+// 5. STATUS BAR ALA GOOGLE EARTH (THROTTLED)
 // ==========================================
 function toDMS(coordinate, isLat) {
     const abs = Math.abs(coordinate); const deg = Math.floor(abs);
@@ -631,7 +568,18 @@ function perbaruiKoordinatBar(latlng) {
     document.getElementById('coord-lng').textContent = toDMS(latlng.lng, false);
 }
 
-map.on('mousemove', function(e) { perbaruiKoordinatBar(e.latlng); });
+// TAMBAHAN: Throttle mousemove untuk cegah peta patah-patah
+let isThrottled = false;
+map.on('mousemove', function(e) { 
+    if (!isThrottled) {
+        requestAnimationFrame(() => {
+            perbaruiKoordinatBar(e.latlng);
+            isThrottled = false;
+        });
+        isThrottled = true;
+    }
+});
+
 map.on('move', function() { perbaruiKoordinatBar(map.getCenter()); });
 map.on('zoomend', updateEyeAltitude);
 updateEyeAltitude();
@@ -646,8 +594,6 @@ window.toggleLegenda = function() {
 
 window.renderLegendaHTML = function() {
     const t = terjemahan[bahasaSaatIni];
-    
-    // Kita gabungkan nama kategori dengan emoji yang sesuai
     const categories = [
         { cat: "Pusat Pemerintahan", emoji: "🏛️" },
         { cat: "Fasilitas Ibadah", emoji: "🕌" },
@@ -660,7 +606,6 @@ window.renderLegendaHTML = function() {
     let content = '<div class="legend-content">';
     content += `<h4>${t.btnLegenda.replace('📜 ', '')} <button type="button" class="close-legend-btn" onclick="window.toggleLegenda()">✖</button></h4>`;
     
-    // 1. Kategori Ikon Fasilitas (Kini menggunakan bentuk bulat dengan emoji)
     categories.forEach(item => { 
         let katName = t["kat" + item.cat.replace(/\s+/g, '')] || item.cat;
         let color = getMarkerColor(item.cat);
@@ -674,20 +619,17 @@ window.renderLegendaHTML = function() {
             </div>`; 
     });
     
-    // Ikon Lokasi Anda (Bulat biru polos)
     content += `
         <div style="display: flex; align-items: center; margin-bottom: 6px;">
             <div style="background-color: #3498db; width: 14px; height: 14px; border-radius: 50%; border: 1px solid #fff; margin-right: 10px; margin-left: 2px;"></div>
             <span style="font-size: 12px;">${t.labelLokasiAnda}</span>
         </div>`;
     
-    // 2. Kategori Garis Jalan & Batas Desa
     content += '<hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">';
     content += `<i style="background:#2c12f3; height: 4px; margin-top: 7px; border-radius: 0;"></i> ${t.labelJalanPantura}<br>`;
     content += `<i style="background:#d4c6c6; height: 2px; margin-top: 8px; border-radius: 0;"></i> ${t.labelJalanDesa}<br>`;
     content += `<i style="background: transparent; border-top: 3px dashed #3cc932; height: 0; margin-top: 8px; border-radius: 0;"></i> ${t.labelBatasAdmin}<br>`;
     
-    // 3. Kategori Blok Area Batas Dusun
     content += '<hr style="border: 0; border-top: 1px solid #7f8c8d; margin: 8px 0;">';
     content += `<i style="background: #b59b38; opacity: 0.6; border-radius: 2px; border: 1px solid #b59b38;"></i> Dusun Tulis Sari<br>`;
     content += `<i style="background: #825b4a; opacity: 0.6; border-radius: 2px; border: 1px solid #825b4a;"></i> Dusun Gondangan<br>`;
@@ -791,7 +733,7 @@ map.on('pm:create', function(e) {
 });
 
 // ==========================================
-// 9. GALERI FOTO
+// 9. GALERI FOTO (DENGAN LAZY LOADING)
 // ==========================================
 window.bukaGaleriFoto = function(index, event) {
     if (event) { event.stopPropagation(); event.preventDefault(); }
@@ -808,9 +750,10 @@ window.bukaGaleriFoto = function(index, event) {
                     <div class="galeri-slider" id="galeri-slider">
     `;
     
+    // TAMBAHAN: loading="lazy" decoding="async"
     kumpulanFoto.forEach((foto, i) => {
         if (foto && foto !== "") {
-            modalHTML += `<div class="foto-container"><div class="loading-spinner"></div><img src="${foto}" alt="Foto ${i+1}" onload="this.classList.add('loaded')" onerror="this.src='https://via.placeholder.com/400x250?text=Foto+Tidak+Tersedia'; this.classList.add('loaded');"></div>`;
+            modalHTML += `<div class="foto-container"><div class="loading-spinner"></div><img src="${foto}" alt="Foto ${i+1}" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.src='https://via.placeholder.com/400x250?text=Foto+Tidak+Tersedia'; this.classList.add('loaded');"></div>`;
         }
     });
     
@@ -916,12 +859,12 @@ window.prosesKirimLaporan = function(kategori, lat, lng) {
     let templateGmaps = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     
     if (kategori === 'keamanan') {
-        let noPolisi = "62895392011414"; // Ganti dengan nomor polisi asli
+        let noPolisi = "62895392011414"; 
         let pesan = encodeURIComponent(`*LAPORAN DARURAT KEAMANAN (PANIC BUTTON)*\n\nMohon bantuan segera, ada indikasi gangguan keamanan/kejahatan di titik ini:\n${templateGmaps}\n\nPengirim: Warga Desa Tulis`);
         urlTujuan = `https://wa.me/${noPolisi}?text=${pesan}`;
         
     } else if (kategori === 'kesehatan') {
-        let noBidan = "6289876543210"; // Ganti dengan nomor bidan asli
+        let noBidan = "6289876543210"; 
         let pesan = encodeURIComponent(`*LAPORAN DARURAT MEDIS*\n\nMohon bantuan medis segera di titik lokasi ini:\n${templateGmaps}\n\nPengirim: Warga Desa Tulis`);
         urlTujuan = `https://wa.me/${noBidan}?text=${pesan}`;
         
@@ -951,7 +894,6 @@ window.toggleBahasa = function() {
     }
     
     document.getElementById('btn-bahasa').innerText = bahasaSaatIni === 'id' ? "🌐 Ganti Bahasa" : "🌐 Change Language";
-    // (Posisikan di dalam fungsi toggleBahasa, bagian paling bawah)
     const btnLabel = document.getElementById('btn-toggle-label');
     if (btnLabel) {
         if (isLabelTampil) {
@@ -965,27 +907,23 @@ window.toggleBahasa = function() {
 // ==========================================
 // FITUR TOGGLE LABEL NAMA TEMPAT
 // ==========================================
-let isLabelTampil = false; // Status awal: disembunyikan
+let isLabelTampil = false; 
 
-// 1. Eksekusi langsung: Matikan label saat web pertama kali dimuat
 document.getElementById('map').classList.add('hide-labels');
 
-// 2. Fungsi ketika tombol diklik
 window.toggleLabel = function() {
     const mapEl = document.getElementById('map');
     const btnLabel = document.getElementById('btn-toggle-label');
     
-    isLabelTampil = !isLabelTampil; // Ubah status
+    isLabelTampil = !isLabelTampil; 
     
     if (isLabelTampil) {
-        // AKSI: MUNCULKAN LABEL
         mapEl.classList.remove('hide-labels');
         btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Sembunyi Label' : '🏷️ Hide Labels';
-        btnLabel.style.background = '#e74c3c'; // Ubah tombol jadi Merah
+        btnLabel.style.background = '#e74c3c'; 
     } else {
-        // AKSI: SEMBUNYIKAN LABEL
         mapEl.classList.add('hide-labels');
         btnLabel.innerHTML = bahasaSaatIni === 'id' ? '🏷️ Tampil Label' : '🏷️ Show Labels';
-        btnLabel.style.background = '#8e44ad'; // Ubah tombol kembali jadi Ungu
+        btnLabel.style.background = '#8e44ad'; 
     }
 };

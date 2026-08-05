@@ -1158,3 +1158,34 @@ body, html {
 .header-logos {
     order: 2 !important; 
 }
+
+/* ==========================================
+   OPTIMASI PERFORMA & KOMPATIBILITAS (HARDWARE ACCELERATION)
+   ========================================== */
+/* KUNCI PERBAIKAN: .custom-marker-wrapper dan .leaflet-marker-icon dihapus 
+   dari daftar ini agar rotasi berdirinya pin (-45deg) tidak tertimpa/hilang */
+
+.leaflet-popup, 
+.leaflet-tooltip,
+.galeri-slider {
+    will-change: transform, opacity;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+#map {
+    touch-action: pan-x pan-y;
+}
+
+@media (max-height: 400px) {
+    #filter-toggle-btn, .lapor-warga-control, #btn-bahasa, #btn-toggle-label {
+        height: 32px !important;
+        font-size: 11px !important;
+        padding: 0 5px !important;
+    }
+    #btn-toggle-label { top: 160px !important; }
+    #btn-bahasa { top: 125px !important; }
+    .lapor-warga-control { top: 90px !important; }
+}
