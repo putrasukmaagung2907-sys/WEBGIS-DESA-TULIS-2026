@@ -397,24 +397,48 @@ function getPopupHTML(index) {
 locations.forEach((loc, index) => {
     const classKategori = 'label-' + loc.type.toLowerCase().replace(/\s+/g, '-');
     
-    // Tentukan arah posisi teks berdasarkan kategori atau letak agar tidak menumpuk
-    // Contoh: kita atur agar tooltip muncul di bagian atas pin dengan sedikit offset
     const marker = L.marker([loc.lat, loc.lng], {
         icon: getCustomIcon(loc.type)
     })
     .bindTooltip(loc.name, { 
         permanent: true, 
-        direction: 'top',             // Ubah dari 'right' ke 'top' agar berada di atas pin
-        offset: [0, -20],             // Beri jarak vertikal agar tidak menutupi kepala pin
+        direction: 'top',             
+        offset: [0, -20],             
         className: 'label-tempat ' + classKategori 
     })
-    .bindPopup(getPopupHTML(index)); 
+    // TAMBAHAN: autoPan di-set false agar animasi bawaan Leaflet tidak tabrakan dengan flyTo kita
+    .bindPopup(getPopupHTML(index), { autoPan: false }); 
 
     if(layerGroups[loc.type]) { marker.addTo(layerGroups[loc.type]); } 
     searchData.push({ name: loc.name.toLowerCase(), marker: marker, lat: loc.lat, lng: loc.lng });
     
     marker.on('popupclose', function() {
         setTimeout(() => { marker.setPopupContent(getPopupHTML(index)); }, 300);
+    });
+
+    // ==========================================
+    // REVISI: FOKUS KE TENGAH KOTAK POP-UP
+    // ==========================================
+    marker.on('click', function(e) {
+        const zoomLevel = map.getZoom();
+        const markerLatLng = e.target.getLatLng();
+        
+        // 1. Ubah kordinat bumi (Lat/Lng) menjadi kordinat layar (Pixel)
+        let pointPixel = map.project(markerLatLng, zoomLevel);
+        
+        // 2. Geser titik pusat layar ke atas sejauh 180 pixel 
+        // (Angka 180 ini adalah perkiraan setengah tinggi pop-up Anda. 
+        // Jika pop-up dirasa masih kurang ke tengah, Anda bisa memperbesar angka ini misal ke 200 atau 220)
+        pointPixel.y -= 180; 
+        
+        // 3. Ubah kembali kordinat layar (Pixel) yang sudah digeser menjadi kordinat bumi (Lat/Lng)
+        const targetLatLng = map.unproject(pointPixel, zoomLevel);
+        
+        // 4. Terbangkan peta ke titik yang baru agar pop-up pas di tengah
+        map.flyTo(targetLatLng, zoomLevel, {
+            animate: true,
+            duration: 0.8
+        });
     });
 });
 
